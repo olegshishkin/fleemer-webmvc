@@ -1,11 +1,13 @@
 package com.fleemer.webmvc.service;
 
 import java.util.Optional;
+import javax.transaction.Transactional;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.repository.JpaRepository;
 
+@Transactional
 public abstract class AbstractService <T, ID, R extends JpaRepository<T, ID>> implements BaseService<T, ID> {
     @Override
     public long count() {
