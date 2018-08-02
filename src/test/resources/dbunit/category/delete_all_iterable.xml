@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<dataset>
+    <Persons id="1" first_name="FirstName1" last_name="LastName1" email="mail100@mail.ma" hash="hash1"/>
+    <Persons id="2" first_name="FirstName2" last_name="LastName2" email="mail95@mail.ma" hash="hash2"/>
+    <Persons id="3" first_name="FirstName3" last_name="LastName3" email="mail3@mail.ma" hash="hash3"/>
+    <Persons id="4" first_name="FirstName4" last_name="LastName4" email="mail5@mail.ma" hash="hash4"/>
+    <Persons id="5" first_name="FirstName5" last_name="LastName5" email="mail@mail.ma" hash="hash5"/>
+
+    <Accounts id="1" type="0" currency="0" name="Cash" sum="00000000000000001012.1000000000" person_id="2"/>
+    <Accounts id="2" type="1" currency="1" name="Bank" sum="00000000000000000333.4500000000" person_id="4"/>
+    <Accounts id="3" type="3" currency="0" name="Wallet" sum="00000000000000001001.0200000000" person_id="1"/>
+
+    <Categories id="1" name="Car" type="1" person_id="1"/>
+    <Categories id="2" name="Home" type="1" person_id="3"/>
+    <Categories id="3" name="Salary" type="0" person_id="1"/>
+    <Categories id="6" name="Home" type="1" person_id="2"/>
+    <Categories id="7" name="Salary" type="0" person_id="4"/>
+
+    <Operations id="1" time="2018-05-12 11:51:12.123457" account_id="2" category_id="7" sum="00000000000000004567.9800000000" result="00000000000000004901.4300000000" UUID="7f764fd65ca6472daa683ee6be457f1c" comment="comment1"/>
+    <Operations id="2" time="2018-05-12 11:51:14.555564" account_id="1" category_id="6" sum="00000000000000000334.0900000000" result="00000000000000000678.0100000000" comment="comment2"/>
+    <Operations id="3" time="2018-05-12 11:51:17.987667" account_id="3" category_id="3" sum="00000000000000008080.1100000000" result="00000000000000009081.1300000000" UUID="6d394e4e4ccf46358c081409f9f1472e" comment="comment3"/>
+    <Operations id="5" time="2018-05-12 11:51:54.163840" account_id="2" category_id="7" sum="00000000000000000543.0000000000" result="00000000000000005444.4300000000" comment="comment5"/>
+    <Operations id="6" time="2018-05-12 11:58:02.000668" account_id="2" category_id="7" sum="00000000000000000012.1000000000" result="00000000000000005456.5300000000" comment="comment6"/>
+    <Operations id="7" time="2018-05-12 12:03:22.987168" account_id="1" category_id="6" sum="00000000000000000146.5800000000" result="00000000000000000531.4300000000" comment="comment7"/>
+</dataset>

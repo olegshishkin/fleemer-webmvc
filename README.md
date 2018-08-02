@@ -1,1 +1,2 @@
 # fleemer-webmvc
+Accounting application
