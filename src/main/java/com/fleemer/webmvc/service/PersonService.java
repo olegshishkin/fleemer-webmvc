@@ -3,7 +3,6 @@ package com.fleemer.webmvc.service;
 import com.fleemer.webmvc.model.Person;
 import com.fleemer.webmvc.repository.PersonRepository;
 import javax.transaction.Transactional;
-import lombok.NonNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -13,7 +12,7 @@ public class PersonService extends AbstractService<Person, Long, PersonRepositor
     private final PersonRepository repository;
 
     @Autowired
-    public PersonService(@NonNull PersonRepository repository) {
+    public PersonService(PersonRepository repository) {
         this.repository = repository;
     }
 

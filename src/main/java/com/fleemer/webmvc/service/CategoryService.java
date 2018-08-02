@@ -3,7 +3,6 @@ package com.fleemer.webmvc.service;
 import com.fleemer.webmvc.model.Category;
 import com.fleemer.webmvc.repository.CategoryRepository;
 import javax.transaction.Transactional;
-import lombok.NonNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -13,7 +12,7 @@ public class CategoryService extends AbstractService<Category, Long, CategoryRep
     private final CategoryRepository repository;
 
     @Autowired
-    public CategoryService(@NonNull CategoryRepository repository) {
+    public CategoryService(CategoryRepository repository) {
         this.repository = repository;
     }
 

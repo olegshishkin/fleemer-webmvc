@@ -3,7 +3,6 @@ package com.fleemer.webmvc.service;
 import com.fleemer.webmvc.model.Account;
 import com.fleemer.webmvc.repository.AccountRepository;
 import javax.transaction.Transactional;
-import lombok.NonNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -13,7 +12,7 @@ public class AccountService extends AbstractService<Account, Long, AccountReposi
     private final AccountRepository repository;
 
     @Autowired
-    public AccountService(@NonNull AccountRepository repository) {
+    public AccountService(AccountRepository repository) {
         this.repository = repository;
     }
 
