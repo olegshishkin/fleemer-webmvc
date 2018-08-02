@@ -26,6 +26,7 @@
       <lombok.version>1.18.2</lombok.version>
       <maven.compiler.source>1.10</maven.compiler.source> <!--todo remove-->
       <maven.compiler.target>1.10</maven.compiler.target> <!--todo remove-->
+      <mockito.version>2.21.0</mockito.version>
       <mysql.version>8.0.11</mysql.version>
       <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
       <slf4j.version>2.1</slf4j.version>
@@ -143,6 +144,14 @@
           <groupId>com.h2database</groupId>
           <artifactId>h2</artifactId>
           <version>${h2.version}</version>
+          <scope>test</scope>
+      </dependency>
+
+      <!-- https://mvnrepository.com/artifact/org.mockito/mockito-core -->
+      <dependency>
+          <groupId>org.mockito</groupId>
+          <artifactId>mockito-core</artifactId>
+          <version>${mockito.version}</version>
           <scope>test</scope>
       </dependency>
 
