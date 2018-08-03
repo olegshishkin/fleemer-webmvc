@@ -4,11 +4,13 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.*;
 
-import com.fleemer.webmvc.model.Category;
-import com.fleemer.webmvc.repository.CategoryRepository;
+import com.fleemer.webmvc.model.Person;
+import com.fleemer.webmvc.repository.PersonRepository;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
+
+import com.fleemer.webmvc.service.implementation.PersonServiceImpl;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
@@ -19,23 +21,23 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 
 @RunWith(MockitoJUnitRunner.class)
-public class CategoryServiceTest {
+public class PersonServiceImplTest {
     private long id = 123L;
 
     @InjectMocks
-    private CategoryService service;
+    private PersonServiceImpl service;
 
     @Mock
-    private CategoryRepository repository;
+    private PersonRepository repository;
 
     @Mock
-    private Category category;
+    private Person person;
 
     @Mock
     private Pageable pageable;
 
     @Mock
-    private Page<Category> page;
+    private Page<Person> page;
 
     @Mock
     private Sort sort;
@@ -56,14 +58,14 @@ public class CategoryServiceTest {
 
     @Test
     public void getOne() {
-        when(repository.getOne(id)).thenReturn(category);
-        assertEquals(category, service.getOne(id));
+        when(repository.getOne(id)).thenReturn(person);
+        assertEquals(person, service.getOne(id));
         verify(repository, times(1)).getOne(id);
     }
 
     @Test
     public void findById() {
-        Optional<Category> optional = Optional.of(category);
+        Optional<Person> optional = Optional.of(person);
         when(repository.findById(id)).thenReturn(optional);
         assertEquals(optional, service.findById(id));
         verify(repository, times(1)).findById(id);
@@ -72,9 +74,9 @@ public class CategoryServiceTest {
     @Test
     public void findAllById() {
         List<Long> ids = Collections.emptyList();
-        List<Category> categories = Collections.emptyList();
-        when(repository.findAllById(ids)).thenReturn(categories);
-        assertEquals(categories, service.findAllById(ids));
+        List<Person> people = Collections.emptyList();
+        when(repository.findAllById(ids)).thenReturn(people);
+        assertEquals(people, service.findAllById(ids));
         verify(repository, times(1)).findAllById(ids);
     }
 
@@ -87,33 +89,33 @@ public class CategoryServiceTest {
 
     @Test
     public void findAll() {
-        List<Category> categories = Collections.emptyList();
-        when(repository.findAll()).thenReturn(categories);
-        assertEquals(categories, service.findAll());
+        List<Person> people = Collections.emptyList();
+        when(repository.findAll()).thenReturn(people);
+        assertEquals(people, service.findAll());
         verify(repository, times(1)).findAll();
     }
 
     @Test
     public void findAll_sort() {
-        List<Category> categories = Collections.emptyList();
-        when(repository.findAll(sort)).thenReturn(categories);
-        assertEquals(categories, service.findAll(sort));
+        List<Person> people = Collections.emptyList();
+        when(repository.findAll(sort)).thenReturn(people);
+        assertEquals(people, service.findAll(sort));
         verify(repository, times(1)).findAll(sort);
     }
 
     @Test
     public void save() {
-        when(repository.save(category)).thenReturn(category);
-        assertEquals(category, service.save(category));
-        verify(repository, times(1)).save(category);
+        when(repository.save(person)).thenReturn(person);
+        assertEquals(person, service.save(person));
+        verify(repository, times(1)).save(person);
     }
 
     @Test
     public void saveAll() {
-        List<Category> categories = Collections.emptyList();
-        when(repository.saveAll(categories)).thenReturn(categories);
-        assertEquals(categories, service.saveAll(categories));
-        verify(repository, times(1)).saveAll(categories);
+        List<Person> people = Collections.emptyList();
+        when(repository.saveAll(people)).thenReturn(people);
+        assertEquals(people, service.saveAll(people));
+        verify(repository, times(1)).saveAll(people);
     }
 
     @Test
@@ -125,17 +127,17 @@ public class CategoryServiceTest {
 
     @Test
     public void delete() {
-        doNothing().when(repository).delete(category);
-        service.delete(category);
-        verify(repository, times(1)).delete(category);
+        doNothing().when(repository).delete(person);
+        service.delete(person);
+        verify(repository, times(1)).delete(person);
     }
 
     @Test
     public void deleteAll_iterable() {
-        List<Category> categories = Collections.emptyList();
-        doNothing().when(repository).deleteAll(categories);
-        service.deleteAll(categories);
-        verify(repository, times(1)).deleteAll(categories);
+        List<Person> people = Collections.emptyList();
+        doNothing().when(repository).deleteAll(people);
+        service.deleteAll(people);
+        verify(repository, times(1)).deleteAll(people);
     }
 
     @Test
@@ -145,17 +147,17 @@ public class CategoryServiceTest {
         verify(repository, times(1)).deleteAll();
     }
 
-    @Test
+    @Test(expected = UnsupportedOperationException.class)
     public void deleteInBatch() {
-        List<Category> categories = Collections.emptyList();
-        doNothing().when(repository).deleteInBatch(categories);
-        service.deleteInBatch(categories);
-        verify(repository, times(1)).deleteInBatch(categories);
+        List<Person> people = Collections.emptyList();
+        doThrow(UnsupportedOperationException.class).when(repository).deleteInBatch(people);
+        service.deleteInBatch(people);
+        verify(repository, times(1)).deleteInBatch(people);
     }
 
-    @Test
+    @Test(expected = UnsupportedOperationException.class)
     public void deleteAllInBatch() {
-        doNothing().when(repository).deleteAllInBatch();
+        doThrow(UnsupportedOperationException.class).when(repository).deleteAllInBatch();
         service.deleteAllInBatch();
         verify(repository, times(1)).deleteAllInBatch();
     }

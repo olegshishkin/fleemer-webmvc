@@ -1,23 +1,14 @@
 package com.fleemer.webmvc.service;
 
 import com.fleemer.webmvc.model.Account;
-import com.fleemer.webmvc.repository.AccountRepository;
-import javax.transaction.Transactional;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
+import com.fleemer.webmvc.model.Person;
+import java.util.List;
+import java.util.Optional;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
+import org.springframework.lang.NonNull;
 
-@Service
-@Transactional
-public class AccountService extends AbstractService<Account, Long, AccountRepository> {
-    private final AccountRepository repository;
-
-    @Autowired
-    public AccountService(AccountRepository repository) {
-        this.repository = repository;
-    }
-
-    @Override
-    protected AccountRepository getRepository() {
-        return repository;
-    }
+public interface AccountService extends BaseService<Account, Long> {
+    Optional<Account> findByNameAndPerson(@NotNull @Size(min = 1, max = 255) String name, Person person);
+    List<Account> findAllByPerson(@NonNull Person person);
 }

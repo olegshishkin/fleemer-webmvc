@@ -1,6 +1,7 @@
-package com.fleemer.webmvc.service;
+package com.fleemer.webmvc.service.implementation;
 
 import java.util.Optional;
+import com.fleemer.webmvc.service.BaseService;
 import javax.transaction.Transactional;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;

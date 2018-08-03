@@ -3,6 +3,9 @@ package com.fleemer.webmvc.model;
 import java.io.Serializable;
 import java.util.Set;
 import javax.persistence.*;
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -20,15 +23,22 @@ public class Person implements Serializable {
     @Column(unique = true, nullable = false, updatable = false)
     private Long id;
 
+    @NotNull
+    @Size(min = 1, max = 255)
     @Column(name = "first_name", nullable = false)
     private String firstName;
 
+    @Size(max = 255)
     @Column(name = "last_name")
     private String lastName;
 
+    @NotNull
+    @Email
     @Column(unique = true, nullable = false)
     private String email;
 
+    @NotNull
+    @Size(min = 1, max = 255)
     @Column(nullable = false)
     private String hash;
 

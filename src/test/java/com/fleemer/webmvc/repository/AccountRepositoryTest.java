@@ -79,13 +79,6 @@ public class AccountRepositoryTest {
     }
 
     @Test
-    public void findAllByPersonId() {
-        List<Account> expected = List.of(accounts.get(1));
-        List<Account> actual = repository.findAllByPersonId(4L);
-        RepositoryAssertions.assertIterableEquals(expected, actual);
-    }
-
-    @Test
     public void findAll() {
         List<Account> expected = List.of(accounts.get(0), accounts.get(1), accounts.get(2));
         RepositoryAssertions.assertIterableEquals(expected, repository.findAll());

@@ -9,6 +9,8 @@ import com.fleemer.webmvc.repository.AccountRepository;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
+
+import com.fleemer.webmvc.service.implementation.AccountServiceImpl;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
@@ -19,11 +21,11 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 
 @RunWith(MockitoJUnitRunner.class)
-public class AccountServiceTest {
+public class AccountServiceImplTest {
     private long id = 123L;
 
     @InjectMocks
-    private AccountService service;
+    private AccountServiceImpl service;
 
     @Mock
     private AccountRepository repository;

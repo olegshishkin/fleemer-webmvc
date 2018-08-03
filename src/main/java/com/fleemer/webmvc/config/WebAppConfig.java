@@ -23,8 +23,8 @@ import org.springframework.web.servlet.view.json.MappingJackson2JsonView;
 @EnableWebMvc
 @Import(DataConfig.class)
 public class WebAppConfig implements WebMvcConfigurer {
-    private static final String RESOURCES_URL_PATTERN = "/resources/**";
-    private static final String RESOURCES_ACCESS_URL = "/";
+    private static final String RESOURCES_URL_PATTERN = "/static/**";
+    private static final String RESOURCES_ACCESS_URL = "/static/";
     private static final String JSP_VIEW_RESOLVER_PREFIX = "/WEB-INF/jsp/";
     private static final String JSP_VIEW_RESOLVER_SUFFIX = ".jsp";
 

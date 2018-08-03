@@ -46,7 +46,7 @@ public class DataConfig {
         return emf;
     }
 
-    @Bean
+    @Bean(destroyMethod = "")
     public DataSource dataSource() {
         JndiDataSourceLookup lookup = new JndiDataSourceLookup();
         lookup.setResourceRef(true);

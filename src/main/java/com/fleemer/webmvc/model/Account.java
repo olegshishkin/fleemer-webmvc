@@ -5,6 +5,9 @@ import com.fleemer.webmvc.model.enums.Currency;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import javax.persistence.*;
+import javax.validation.constraints.Digits;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -24,17 +27,23 @@ public class Account implements Serializable {
     @Column(unique = true, nullable = false, updatable = false)
     private Long id;
 
+    @NotNull
     @Enumerated
     @Column(nullable = false)
     private AccountType type;
 
+    @NotNull
     @Enumerated
     @Column(nullable = false)
     private Currency currency;
 
+    @NotNull
+    @Size(min = 1, max = 255)
     @Column(nullable = false)
     private String name;
 
+    @NotNull
+    @Digits(integer = 20, fraction = 10)
     @Column(precision = 20, scale = 10, nullable = false)
     private BigDecimal sum;
 

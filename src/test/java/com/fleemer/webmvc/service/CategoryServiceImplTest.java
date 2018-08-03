@@ -4,11 +4,13 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.*;
 
-import com.fleemer.webmvc.model.Operation;
-import com.fleemer.webmvc.repository.OperationRepository;
+import com.fleemer.webmvc.model.Category;
+import com.fleemer.webmvc.repository.CategoryRepository;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
+
+import com.fleemer.webmvc.service.implementation.CategoryServiceImpl;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
@@ -19,23 +21,23 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 
 @RunWith(MockitoJUnitRunner.class)
-public class OperationServiceTest {
+public class CategoryServiceImplTest {
     private long id = 123L;
 
     @InjectMocks
-    private OperationService service;
+    private CategoryServiceImpl service;
 
     @Mock
-    private OperationRepository repository;
+    private CategoryRepository repository;
 
     @Mock
-    private Operation operation;
+    private Category category;
 
     @Mock
     private Pageable pageable;
 
     @Mock
-    private Page<Operation> page;
+    private Page<Category> page;
 
     @Mock
     private Sort sort;
@@ -56,14 +58,14 @@ public class OperationServiceTest {
 
     @Test
     public void getOne() {
-        when(repository.getOne(id)).thenReturn(operation);
-        assertEquals(operation, service.getOne(id));
+        when(repository.getOne(id)).thenReturn(category);
+        assertEquals(category, service.getOne(id));
         verify(repository, times(1)).getOne(id);
     }
 
     @Test
     public void findById() {
-        Optional<Operation> optional = Optional.of(operation);
+        Optional<Category> optional = Optional.of(category);
         when(repository.findById(id)).thenReturn(optional);
         assertEquals(optional, service.findById(id));
         verify(repository, times(1)).findById(id);
@@ -72,9 +74,9 @@ public class OperationServiceTest {
     @Test
     public void findAllById() {
         List<Long> ids = Collections.emptyList();
-        List<Operation> operations = Collections.emptyList();
-        when(repository.findAllById(ids)).thenReturn(operations);
-        assertEquals(operations, service.findAllById(ids));
+        List<Category> categories = Collections.emptyList();
+        when(repository.findAllById(ids)).thenReturn(categories);
+        assertEquals(categories, service.findAllById(ids));
         verify(repository, times(1)).findAllById(ids);
     }
 
@@ -87,33 +89,33 @@ public class OperationServiceTest {
 
     @Test
     public void findAll() {
-        List<Operation> operations = Collections.emptyList();
-        when(repository.findAll()).thenReturn(operations);
-        assertEquals(operations, service.findAll());
+        List<Category> categories = Collections.emptyList();
+        when(repository.findAll()).thenReturn(categories);
+        assertEquals(categories, service.findAll());
         verify(repository, times(1)).findAll();
     }
 
     @Test
     public void findAll_sort() {
-        List<Operation> operations = Collections.emptyList();
-        when(repository.findAll(sort)).thenReturn(operations);
-        assertEquals(operations, service.findAll(sort));
+        List<Category> categories = Collections.emptyList();
+        when(repository.findAll(sort)).thenReturn(categories);
+        assertEquals(categories, service.findAll(sort));
         verify(repository, times(1)).findAll(sort);
     }
 
     @Test
     public void save() {
-        when(repository.save(operation)).thenReturn(operation);
-        assertEquals(operation, service.save(operation));
-        verify(repository, times(1)).save(operation);
+        when(repository.save(category)).thenReturn(category);
+        assertEquals(category, service.save(category));
+        verify(repository, times(1)).save(category);
     }
 
     @Test
     public void saveAll() {
-        List<Operation> operations = Collections.emptyList();
-        when(repository.saveAll(operations)).thenReturn(operations);
-        assertEquals(operations, service.saveAll(operations));
-        verify(repository, times(1)).saveAll(operations);
+        List<Category> categories = Collections.emptyList();
+        when(repository.saveAll(categories)).thenReturn(categories);
+        assertEquals(categories, service.saveAll(categories));
+        verify(repository, times(1)).saveAll(categories);
     }
 
     @Test
@@ -125,17 +127,17 @@ public class OperationServiceTest {
 
     @Test
     public void delete() {
-        doNothing().when(repository).delete(operation);
-        service.delete(operation);
-        verify(repository, times(1)).delete(operation);
+        doNothing().when(repository).delete(category);
+        service.delete(category);
+        verify(repository, times(1)).delete(category);
     }
 
     @Test
     public void deleteAll_iterable() {
-        List<Operation> operations = Collections.emptyList();
-        doNothing().when(repository).deleteAll(operations);
-        service.deleteAll(operations);
-        verify(repository, times(1)).deleteAll(operations);
+        List<Category> categories = Collections.emptyList();
+        doNothing().when(repository).deleteAll(categories);
+        service.deleteAll(categories);
+        verify(repository, times(1)).deleteAll(categories);
     }
 
     @Test
@@ -147,10 +149,10 @@ public class OperationServiceTest {
 
     @Test
     public void deleteInBatch() {
-        List<Operation> operations = Collections.emptyList();
-        doNothing().when(repository).deleteInBatch(operations);
-        service.deleteInBatch(operations);
-        verify(repository, times(1)).deleteInBatch(operations);
+        List<Category> categories = Collections.emptyList();
+        doNothing().when(repository).deleteInBatch(categories);
+        service.deleteInBatch(categories);
+        verify(repository, times(1)).deleteInBatch(categories);
     }
 
     @Test
