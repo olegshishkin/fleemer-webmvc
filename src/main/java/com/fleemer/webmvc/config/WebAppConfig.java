@@ -5,7 +5,6 @@ import java.util.List;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.Import;
 import org.springframework.http.MediaType;
 import org.springframework.web.accept.ContentNegotiationManager;
 import org.springframework.web.servlet.ViewResolver;
@@ -21,7 +20,6 @@ import org.springframework.web.servlet.view.json.MappingJackson2JsonView;
 @Configuration
 @ComponentScan("com.fleemer.webmvc")
 @EnableWebMvc
-@Import(DataConfig.class)
 public class WebAppConfig implements WebMvcConfigurer {
     private static final String RESOURCES_URL_PATTERN = "/static/**";
     private static final String RESOURCES_ACCESS_URL = "/static/";

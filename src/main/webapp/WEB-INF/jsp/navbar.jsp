@@ -1,4 +1,5 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="security" uri="http://www.springframework.org/security/tags" %>
 <%@ page contentType="text/html;charset=UTF-8" %>
 <nav class="navbar navbar-expand-md navbar-dark bg-dark fixed-top">
     <a class="navbar-brand" href="<c:url value="/"/>">
@@ -21,18 +22,22 @@
                 <c:when test="${param.title.equals('Accounts')}"><li class="nav-item active"></c:when>
                 <c:when test="${!param.title.equals('Accounts')}"><li class="nav-item"></c:when>
             </c:choose>
-                <a class="nav-link" href="<c:url value="/"/>">Accounts</a>
+                <a class="nav-link" href="<c:url value="/accounts"/>">Accounts</a>
             </li>
             <c:choose>
                 <c:when test="${param.title.equals('Categories')}"><li class="nav-item active"></c:when>
                 <c:when test="${!param.title.equals('Categories')}"><li class="nav-item"></c:when>
             </c:choose>
-                <a class="nav-link" href="#">Categories</a>
+                <a class="nav-link" href="<c:url value="/categories"/>">Categories</a>
             </li>
         </ul>
         <ul class="navbar-nav ml-auto">
             <li class="nav-item">
-                <a class="nav-link" href="">Logout (Fred)</a>
+                <a class="nav-link" href="<c:url value="/logout"/>">
+                    <security:authorize access="isAuthenticated()">
+                        Logout (<security:authentication property="principal.username"/>)
+                    </security:authorize>
+                </a>
             </li>
         </ul>
     </div>

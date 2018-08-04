@@ -5,9 +5,7 @@ import com.fleemer.webmvc.repository.PersonRepository;
 import com.fleemer.webmvc.service.PersonService;
 import java.util.Optional;
 import javax.transaction.Transactional;
-import javax.validation.constraints.Email;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -25,7 +23,7 @@ public class PersonServiceImpl extends AbstractService<Person, Long, PersonRepos
         return repository;
     }
 
-    public Optional<Person> findByEmail(@NonNull @Email String email) {
+    public Optional<Person> findByEmail(String email) {
         return repository.findByEmail(email);
     }
 }

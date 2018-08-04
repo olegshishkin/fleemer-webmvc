@@ -10,17 +10,13 @@
         <div class="row justify-content-center">
             <div class="col col-lg-4">
                 <h5 class="text-center">Create user</h5>
-                <c:if test="${!empty existenceError}">
-                    <div class="alert alert-danger text-center" role="alert">
-                        ${existenceError}
-                    </div>
-                </c:if>
                 <form:form method="post" action="/user/create" modelAttribute="person">
                     <div class="row">
                         <div class="col-md-12 mb-3">
                             <form:label path="email">Email</form:label>
                             <form:input path="email" type="email" class="form-control"
                                    pattern="^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$" required="true"/>
+                            <form:errors path="email" cssClass="invalid-feedback"/>
                         </div>
                     </div>
 
@@ -28,6 +24,7 @@
                         <div class="col-md-12 mb-3">
                             <form:label path="firstName">Firstname</form:label>
                             <form:input path="firstName" type="text" class="form-control" required="true"/>
+                            <form:errors path="firstName" cssClass="invalid-feedback"/>
                         </div>
                     </div>
 
@@ -35,6 +32,7 @@
                         <div class="col-md-12 mb-3">
                             <form:label path="lastName">Lastname</form:label>
                             <form:input path="lastName" type="text" class="form-control"/>
+                            <form:errors path="lastName" cssClass="invalid-feedback"/>
                         </div>
                     </div>
 
@@ -42,6 +40,7 @@
                         <div class="col-md-12 mb-3">
                             <form:label path="hash">Password</form:label>
                             <form:input path="hash" type="password" class="form-control" required="true"/>
+                            <form:errors path="hash" cssClass="invalid-feedback"/>
                         </div>
                     </div>
 

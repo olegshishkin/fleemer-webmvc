@@ -8,18 +8,14 @@
         <div class="row justify-content-center">
             <div class="col-lg-4">
                 <h5 class="text-center">Add account</h5>
-
-                <c:if test="${!empty existenceError}">
-                    <div class="alert alert-danger text-center" role="alert">
-                            ${existenceError}
-                    </div>
-                </c:if>
-
-                <form:form action="/accounts/create" method="post" modelAttribute="account">
+                <form:form action="/accounts/create" method="post" modelAttribute="account" cssClass="needs-validation" novalidate="true">
                     <div class="row">
                         <div class="col-md-12 mb-3">
                             <form:label path="name">Name</form:label>
                             <form:input path="name" type="text" class="form-control" required="true"/>
+                            <form:errors path="name" cssClass="text-danger"/>
+                            <div class="invalid-feedback">The field cannot be empty</div>
+                            <div class="valid-feedback">Correct</div>
                         </div>
                     </div>
 
@@ -27,11 +23,14 @@
                         <div class="col-md-12 mb-3">
                             <form:label path="type">Type</form:label>
                             <form:select path="type" class="custom-select d-block w-100" required="true">
-                                <option value="">Choose...</option>
+                                <option value="">Select...</option>
                                 <c:forEach items="${accountTypes}" var="t">
-                                    <form:option value="${t.ordinal()}">${t.name()}</form:option>
+                                    <form:option value="${t}">${t.name()}</form:option>
                                 </c:forEach>
                             </form:select>
+                            <form:errors path="type" cssClass="text-danger"/>
+                            <div class="invalid-feedback">Select a value</div>
+                            <div class="valid-feedback">Correct</div>
                         </div>
                     </div>
 
@@ -39,11 +38,24 @@
                         <div class="col-md-12 mb-3">
                             <form:label path="currency">Currency</form:label>
                             <form:select path="currency" class="custom-select d-block w-100" required="true">
-                                <option value="">Choose...</option>
+                                <option value="">Select...</option>
                                 <c:forEach items="${currencies}" var="c">
-                                    <form:option value="${c.ordinal()}">${c.name()}</form:option>
+                                    <form:option value="${c}">${c.name()}</form:option>
                                 </c:forEach>
                             </form:select>
+                            <form:errors path="currency" cssClass="text-danger"/>
+                            <div class="invalid-feedback">Select a value</div>
+                            <div class="valid-feedback">Correct</div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-12 mb-3">
+                            <form:label path="sum">Initial sum</form:label>
+                            <form:input path="sum" type="text" class="form-control" pattern="[0-9]+(\.[0-9]+)?" required="true"/>
+                            <form:errors path="sum" cssClass="text-danger"/>
+                            <div class="invalid-feedback">The field cannot be empty and should be a digit</div>
+                            <div class="valid-feedback">Correct</div>
                         </div>
                     </div>
 
