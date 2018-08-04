@@ -6,25 +6,30 @@
 <main role="main" class="container">
     <div class="container">
         <div class="row justify-content-center">
-
             <div class="col-lg-4">
                 <h5 class="text-center">Add category</h5>
-                <form>
 
+                <form:form action="/category/new" method="post" modelAttribute="category" cssClass="needs-validation" novalidate="true">
                     <div class="row">
                         <div class="col-md-12 mb-3">
-                            <label for="type">Type</label>
-                            <select class="custom-select d-block w-100" id="type" required>
-                                <option value="">Choose...</option>
-                                <option>Bank</option>
-                            </select>
+                            <form:label path="name">Name</form:label>
+                            <form:input path="name" type="text" cssClass="form-control" required="true"/>
+                            <form:errors path="name" cssClass="text-danger"/>
+                            <div class="invalid-feedback">The field cannot be empty</div>
+                            <div class="valid-feedback">Correct</div>
                         </div>
                     </div>
 
                     <div class="row">
                         <div class="col-md-12 mb-3">
-                            <label for="name">Name</label>
-                            <input type="text" class="form-control" id="name" required>
+                            <form:label path="type">Type</form:label>
+                            <form:select path="type" cssClass="custom-select d-block w-100" required="true">
+                                <form:option value="0" label="Select..."/>
+                                <form:options items="${categoryTypes}"/>
+                            </form:select>
+                            <form:errors path="type" cssClass="text-danger"/>
+                            <div class="invalid-feedback">Select a value</div>
+                            <div class="valid-feedback">Correct</div>
                         </div>
                     </div>
 
@@ -33,7 +38,8 @@
                             <button class="btn btn-primary btn-block" type="submit">Submit</button>
                         </div>
                     </div>
-                </form>
+                </form:form>
+
             </div>
         </div>
 
@@ -47,28 +53,15 @@
                     </tr>
                     </thead>
                     <tbody>
-                    <tr>
-                        <th>1</th>
-                        <td>1</td>
-                    </tr>
-                    <tr>
-                        <th>1</th>
-                        <td>1</td>
-                    </tr>
-                    <tr>
-                        <th>1</th>
-                        <td>1</td>
-                    </tr>
+                    <c:forEach items="${categories}" var="a">
+                        <tr>
+                            <th>${a.name}</th>
+                            <td>${a.type}</td>
+                        </tr>
+                    </c:forEach>
                     </tbody>
                 </table>
             </div>
         </div>
     </div>
-
-    <footer class="my-5 text-muted text-center text-small">
-        <p class="mb-3">&copy; 2018 Fleemer Corp.</p>
-    </footer>
-</main>
-
-</body>
-</html>
+<%@include file="footer.jsp" %>

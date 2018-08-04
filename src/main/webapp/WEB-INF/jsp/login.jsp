@@ -33,7 +33,12 @@
     <div class="invalid-feedback">Please input password</div>
 
     <button type="submit" class="btn btn-outline-primary">Sign in</button>
-    <p class="mt-5 mb-3 text-muted">&copy; 2018 Fleemer Corp.</p>
-</form>
+    <br><br>
+    <div>
+        <a href="<c:url value="/user"/>" class="btn btn-link text-dark btn-sm" role="button">Register</a>
+    </div>
+    <footer class="text-muted text-center text-small">
+        <p >&copy; 2018 Fleemer Corp.</p>
+    </footer>
 </body>
 </html>

@@ -1,5 +1,7 @@
 package com.fleemer.webmvc.web.controller;
 
+import static com.fleemer.webmvc.web.controller.CommonUtils.getPersonByEmail;
+
 import com.fleemer.webmvc.model.Account;
 import com.fleemer.webmvc.model.Person;
 import com.fleemer.webmvc.model.enums.AccountType;
@@ -9,11 +11,11 @@ import com.fleemer.webmvc.service.PersonService;
 import java.security.Principal;
 import java.util.Optional;
 import javax.validation.Valid;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.hibernate.Hibernate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.ModelMap;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -21,10 +23,9 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
-@RequestMapping("/accounts")
+@RequestMapping("/account")
 public class AccountController {
-    private static final Logger logger = LoggerFactory.getLogger(AccountController.class);
-    private static final String ACCOUNTS_VIEW = "accounts";
+    private static final String ROOT_VIEW = "accounts";
     private final AccountService accountService;
     private final PersonService personService;
 
@@ -34,42 +35,40 @@ public class AccountController {
         this.personService = personService;
     }
 
+    @Transactional(readOnly = true)
     @GetMapping
-    public String showCreateAccountForm(ModelMap model, Principal principal) {
+    public String accounts(Model model, Principal principal) {
+        Person person = getPersonByEmail(personService, principal.getName());
+        populateModel(model, person.getAccounts());
         model.addAttribute("account", new Account());
-        modelPopulate(model, principal);
-        return ACCOUNTS_VIEW;
+        return ROOT_VIEW;
     }
 
-    private void modelPopulate(ModelMap model, Principal principal) {
+    @Transactional
+    @PostMapping("/new")
+    public String newAccount(@Valid @ModelAttribute Account account, BindingResult bindingResult, Model model,
+                             Principal principal) {
+        Person person = getPersonByEmail(personService, principal.getName());
+        if (bindingResult.hasErrors()) {
+            populateModel(model, person.getAccounts());
+            return ROOT_VIEW;
+        }
+        Optional<Account> lookedAccount = accountService.findByNameAndPerson(account.getName(), person);
+        if (lookedAccount.isPresent()) {
+            String message = "Account with such name already exists! Try again, please.";
+            bindingResult.rejectValue("name", "name.alreadyExists", message);
+            populateModel(model, person.getAccounts());
+            return ROOT_VIEW;
+        }
+        account.setPerson(person);
+        accountService.save(account);
+        return "redirect:/account";
+    }
+
+    private void populateModel(Model model, Iterable<Account> collection) {
+        Hibernate.initialize(collection);
+        model.addAttribute("accounts", collection);
         model.addAttribute("accountTypes", AccountType.values());
         model.addAttribute("currencies", Currency.values());
-        model.addAttribute("accounts", accountService.findAllByPersonEmail(principal.getName()));
-    }
-
-    @PostMapping("/create")
-    public String createAccount(@Valid @ModelAttribute Account account, BindingResult bindingResult, ModelMap model,
-                                Principal principal) {
-        if (bindingResult.hasErrors()) {
-            logger.debug("Unsuccessful form validation. Object: " + account.toString());
-            modelPopulate(model, principal);
-            return ACCOUNTS_VIEW;
-        }
-        String name = account.getName();
-        Optional<Person> person = personService.findByEmail(principal.getName());
-        if (!person.isPresent()) {
-            return "redirect:/";
-        }
-        account.setPerson(person.get());
-        if (accountService.findByNameAndPerson(name, person.get()).isPresent()) {
-            String message = "Category with such name already exists! Try again, please.";
-            bindingResult.rejectValue("name", "name.alreadyExists", message);
-            logger.debug("Unsuccessful form validation. Object: " + account.toString());
-            modelPopulate(model, principal);
-            return ACCOUNTS_VIEW;
-        }
-        accountService.save(account);
-        logger.debug("Account was created. Id: " + account.getId());
-        return "redirect:/" + ACCOUNTS_VIEW;
     }
 }

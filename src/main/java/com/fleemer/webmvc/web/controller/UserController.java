@@ -26,12 +26,12 @@ public class UserController {
         this.passwordEncoder = passwordEncoder;
     }
 
-    @GetMapping("/create")
+    @GetMapping
     public ModelAndView showCreateUserForm() {
         return new ModelAndView(USER_FORM_VIEW, "person", new Person());
     }
 
-    @PostMapping("/create")
+    @PostMapping("/new")
     public String createUser(@Valid @ModelAttribute Person person, BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
             return USER_FORM_VIEW;
@@ -39,7 +39,7 @@ public class UserController {
         String email = person.getEmail();
         if (personService.findByEmail(email).isPresent()) {
             String message = "User with such email address already exists! Try again, please.";
-            bindingResult.rejectValue("person.email", "person.email.alreadyExists", message);
+            bindingResult.rejectValue("email", "email.alreadyExists", message);
             return USER_FORM_VIEW;
         }
         String hash = passwordEncoder.encode(person.getHash());

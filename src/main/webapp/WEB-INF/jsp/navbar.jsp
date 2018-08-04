@@ -13,8 +13,8 @@
     <div class="collapse navbar-collapse" id="navbarsExampleDefault">
         <ul class="navbar-nav mr-auto">
             <c:choose>
-                <c:when test="${param.title.equals('Main')}"><li class="nav-item active"></c:when>
-                <c:when test="${!param.title.equals('Main')}"><li class="nav-item"></c:when>
+                <c:when test="${param.title.equals('Home')}"><li class="nav-item active"></c:when>
+                <c:when test="${!param.title.equals('Home')}"><li class="nav-item"></c:when>
             </c:choose>
                 <a class="nav-link" href="<c:url value="/"/>">Home</a>
             </li>
@@ -22,13 +22,13 @@
                 <c:when test="${param.title.equals('Accounts')}"><li class="nav-item active"></c:when>
                 <c:when test="${!param.title.equals('Accounts')}"><li class="nav-item"></c:when>
             </c:choose>
-                <a class="nav-link" href="<c:url value="/accounts"/>">Accounts</a>
+                <a class="nav-link" href="<c:url value="/account"/>">Accounts</a>
             </li>
             <c:choose>
                 <c:when test="${param.title.equals('Categories')}"><li class="nav-item active"></c:when>
                 <c:when test="${!param.title.equals('Categories')}"><li class="nav-item"></c:when>
             </c:choose>
-                <a class="nav-link" href="<c:url value="/categories"/>">Categories</a>
+                <a class="nav-link" href="<c:url value="/category"/>">Categories</a>
             </li>
         </ul>
         <ul class="navbar-nav ml-auto">
