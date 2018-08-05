@@ -2,6 +2,7 @@ package com.fleemer.webmvc.service.implementation;
 
 import java.util.Optional;
 import com.fleemer.webmvc.service.BaseService;
+import com.fleemer.webmvc.service.exception.ServiceException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -51,7 +52,7 @@ public abstract class AbstractService <T, ID, R extends JpaRepository<T, ID>> im
     }
 
     @Override
-    public <S extends T> S save(S entity) {
+    public <S extends T> S save(S entity) throws ServiceException {
         return getRepository().save(entity);
     }
 

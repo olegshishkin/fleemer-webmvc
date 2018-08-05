@@ -2,6 +2,7 @@ package com.fleemer.webmvc.web.controller;
 
 import com.fleemer.webmvc.model.Person;
 import com.fleemer.webmvc.service.PersonService;
+import com.fleemer.webmvc.service.exception.ServiceException;
 import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -32,7 +33,7 @@ public class UserController {
     }
 
     @PostMapping("/new")
-    public String createUser(@Valid @ModelAttribute Person person, BindingResult bindingResult) {
+    public String createUser(@Valid @ModelAttribute Person person, BindingResult bindingResult) throws ServiceException {
         if (bindingResult.hasErrors()) {
             return USER_FORM_VIEW;
         }

@@ -1,13 +1,12 @@
 package com.fleemer.webmvc.web.controller;
 
-import static com.fleemer.webmvc.web.controller.CommonUtils.getPersonByEmail;
-
 import com.fleemer.webmvc.model.Account;
 import com.fleemer.webmvc.model.Person;
 import com.fleemer.webmvc.model.enums.AccountType;
 import com.fleemer.webmvc.model.enums.Currency;
 import com.fleemer.webmvc.service.AccountService;
 import com.fleemer.webmvc.service.PersonService;
+import com.fleemer.webmvc.service.exception.ServiceException;
 import java.security.Principal;
 import java.util.Optional;
 import javax.validation.Valid;
@@ -38,8 +37,8 @@ public class AccountController {
     @Transactional(readOnly = true)
     @GetMapping
     public String accounts(Model model, Principal principal) {
-        Person person = getPersonByEmail(personService, principal.getName());
-        populateModel(model, person.getAccounts());
+        Person person = personService.findByEmail(principal.getName()).orElseThrow();
+        fillModel(model, person.getAccounts());
         model.addAttribute("account", new Account());
         return ROOT_VIEW;
     }
@@ -47,17 +46,17 @@ public class AccountController {
     @Transactional
     @PostMapping("/new")
     public String newAccount(@Valid @ModelAttribute Account account, BindingResult bindingResult, Model model,
-                             Principal principal) {
-        Person person = getPersonByEmail(personService, principal.getName());
+                             Principal principal) throws ServiceException {
+        Person person = personService.findByEmail(principal.getName()).orElseThrow();
         if (bindingResult.hasErrors()) {
-            populateModel(model, person.getAccounts());
+            fillModel(model, person.getAccounts());
             return ROOT_VIEW;
         }
         Optional<Account> lookedAccount = accountService.findByNameAndPerson(account.getName(), person);
         if (lookedAccount.isPresent()) {
             String message = "Account with such name already exists! Try again, please.";
             bindingResult.rejectValue("name", "name.alreadyExists", message);
-            populateModel(model, person.getAccounts());
+            fillModel(model, person.getAccounts());
             return ROOT_VIEW;
         }
         account.setPerson(person);
@@ -65,7 +64,7 @@ public class AccountController {
         return "redirect:/account";
     }
 
-    private void populateModel(Model model, Iterable<Account> collection) {
+    private void fillModel(Model model, Iterable<Account> collection) {
         Hibernate.initialize(collection);
         model.addAttribute("accounts", collection);
         model.addAttribute("accountTypes", AccountType.values());

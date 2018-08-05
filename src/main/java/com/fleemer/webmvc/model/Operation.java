@@ -13,6 +13,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
+import org.springframework.format.annotation.DateTimeFormat;
 
 @Entity
 @Table(uniqueConstraints = {@UniqueConstraint(columnNames = {"id"})})
@@ -27,6 +28,7 @@ public class Operation implements Serializable {
     private Long id;
 
     @NotNull
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
     @Column(nullable = false)
     private LocalDate date;
 

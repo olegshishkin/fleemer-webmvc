@@ -1,6 +1,8 @@
 package com.fleemer.webmvc.service;
 
 import java.util.Optional;
+
+import com.fleemer.webmvc.service.exception.ServiceException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -14,7 +16,7 @@ public interface BaseService<T, ID> {
     Page<T> findAll(Pageable pageable);
     Iterable<T> findAll();
     Iterable<T> findAll(Sort sort);
-    <S extends T> S save(S entity);
+    <S extends T> S save(S entity) throws ServiceException;
     <S extends T> Iterable<S> saveAll(Iterable<S> entities);
     void deleteById(ID id);
     void delete(T entity);

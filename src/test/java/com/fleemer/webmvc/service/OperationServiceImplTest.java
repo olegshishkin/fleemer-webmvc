@@ -6,6 +6,7 @@ import static org.mockito.Mockito.*;
 
 import com.fleemer.webmvc.model.Operation;
 import com.fleemer.webmvc.repository.OperationRepository;
+import com.fleemer.webmvc.service.exception.ServiceException;
 import com.fleemer.webmvc.service.implementation.OperationServiceImpl;
 import java.util.Collections;
 import java.util.List;
@@ -103,7 +104,7 @@ public class OperationServiceImplTest {
     }
 
     @Test
-    public void save() {
+    public void save() throws ServiceException {
         when(repository.save(operation)).thenReturn(operation);
         assertEquals(operation, service.save(operation));
         verify(repository, times(1)).save(operation);

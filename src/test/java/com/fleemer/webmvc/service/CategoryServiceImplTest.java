@@ -6,6 +6,7 @@ import static org.mockito.Mockito.*;
 
 import com.fleemer.webmvc.model.Category;
 import com.fleemer.webmvc.repository.CategoryRepository;
+import com.fleemer.webmvc.service.exception.ServiceException;
 import com.fleemer.webmvc.service.implementation.CategoryServiceImpl;
 import java.util.Collections;
 import java.util.List;
@@ -103,7 +104,7 @@ public class CategoryServiceImplTest {
     }
 
     @Test
-    public void save() {
+    public void save() throws ServiceException {
         when(repository.save(category)).thenReturn(category);
         assertEquals(category, service.save(category));
         verify(repository, times(1)).save(category);

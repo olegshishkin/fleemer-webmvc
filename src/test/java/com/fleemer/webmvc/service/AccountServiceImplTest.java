@@ -6,6 +6,7 @@ import static org.mockito.Mockito.*;
 
 import com.fleemer.webmvc.model.Account;
 import com.fleemer.webmvc.repository.AccountRepository;
+import com.fleemer.webmvc.service.exception.ServiceException;
 import com.fleemer.webmvc.service.implementation.AccountServiceImpl;
 import java.util.Collections;
 import java.util.List;
@@ -103,7 +104,7 @@ public class AccountServiceImplTest {
     }
 
     @Test
-    public void save() {
+    public void save() throws ServiceException {
         when(repository.save(account)).thenReturn(account);
         assertEquals(account, service.save(account));
         verify(repository, times(1)).save(account);

@@ -1,5 +1,6 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ page contentType="text/html;charset=UTF-8" %>
 <%@include file="header.jsp" %>
 <jsp:include page="navbar.jsp"><jsp:param name="title" value="Home"/></jsp:include>
@@ -52,49 +53,49 @@
                 <form:form action="/operation/new" method="post" modelAttribute="operation" cssClass="needs-validation" novalidate="true">
                     <div class="row">
                         <div class="col-md-6 mb-3">
-                            <form:select path="inAccount" cssClass="custom-select d-block w-100" required="true">
-                                <form:option value="0" label="Select account"/>
-                                <form:options items="${accounts}" itemValue="id" itemLabel="name"/>
+                            <form:select path="outAccountName" cssClass="custom-select d-block w-100">
+                                <form:option value="" label="Select account"/>
+                                <form:options items="${accounts}"/>
                             </form:select>
-                            <form:errors path="inAccount" cssClass="invalid-feedback"/>
+                            <form:errors path="outAccountName" cssClass="text-danger"/>
                         </div>
                         <div class="col-md-6 mb-3">
-                            <form:select path="outAccount" cssClass="custom-select d-block w-100">
-                                <form:option value="0" label="Select account"/>
-                                <form:options items="${accounts}" itemValue="id" itemLabel="name"/>
+                            <form:select path="inAccountName" cssClass="custom-select d-block w-100" disabled="true">
+                                <form:option value="" label="Select account"/>
+                                <form:options items="${accounts}"/>
                             </form:select>
-                            <form:errors path="outAccount" cssClass="invalid-feedback"/>
+                            <form:errors path="inAccountName" cssClass="text-danger"/>
                         </div>
                     </div>
 
                     <div class="row">
                         <div class="col-md-12 mb-3">
-                            <form:select path="category" cssClass="custom-select d-block w-100" required="true">
-                                <form:option value="0" label="Select category"/>
-                                <form:options items="${categories}" itemValue="id" itemLabel="name"/>
+                            <form:select path="categoryName" cssClass="custom-select d-block w-100">
+                                <form:option value="" label="Select category"/>
+                                <form:options items="${categories}"/>
                             </form:select>
-                            <form:errors path="category" cssClass="invalid-feedback"/>
+                            <form:errors path="categoryName" cssClass="text-danger"/>
                         </div>
                     </div>
 
                     <div class="row">
                         <div class="col-md-6 mb-3">
-                            <form:input path="date" cssClass="form-control" placeholder="dd.mm.yyyy"
+                            <form:input path="operation.date" cssClass="form-control" placeholder="yyyy-mm-dd"
                                         type="text" required="true"/>
-                            <form:errors path="date" cssClass="invalid-feedback"/>
+                            <form:errors path="operation.date" cssClass="text-danger"/>
                             <div class="invalid-feedback">Select a date of operation</div>
                         </div>
                         <div class="col-md-6 mb-3">
-                            <form:input path="sum" type="text" cssClass="form-control" placeholder="0.00"
+                            <form:input path="operation.sum" type="text" cssClass="form-control" placeholder="0.00"
                                         pattern="[0-9]+(\.[0-9]+)?" required="true" autofocus="true"/>
-                            <form:errors path="sum" cssClass="invalid-feedback"/>
+                            <form:errors path="operation.sum" cssClass="text-danger"/>
                             <div class="invalid-feedback">The field cannot be empty and should be a digit</div>
                         </div>
                     </div>
 
                     <div class="row">
                         <div class="col-md-12 mb-3">
-                            <form:textarea path="comment" cssClass="form-control" rows="1" placeholder="Comment"/>
+                            <form:textarea path="operation.comment" cssClass="form-control" rows="1" placeholder="Comment"/>
                         </div>
                     </div>
 
@@ -114,7 +115,7 @@
         <div class="row">
             <div class="col-md-12 mb-3">
                 <table class="table table-hover">
-                    <thead>
+                    <thead align="right">
                     <tr>
                         <th scope="col">Date</th>
                         <th scope="col">From account</th>
@@ -126,21 +127,21 @@
                     <tbody>
                     <c:forEach items="${operations}" var="o">
                         <tr>
-                            <th>${o.date}</th>
-                            <td>${o.inAccount}</td>
-                            <td>${o.outAccount}</td>
-                            <td>${o.category}</td>
-                            <td class="text-danger">
-                                <c:choose>
-                                    <c:when test="${o.inAccount != null && o.outAccount != null}">
-                                        <td class="text-danger">${o.sum}</td>
-                                    </c:when>
-                                    <c:when test="${o.inAccount != null && o.category != null}">
-                                        <td class="text-success">${o.sum}</td>
-                                    </c:when>
-                                    <c:otherwise><td>${o.sum}</td></c:otherwise>
-                                </c:choose>
-                            </td>
+                            <td align="right">${o.date}</td>
+                            <td align="right">${o.outAccount.name}</td>
+                            <td align="right">${o.inAccount.name}</td>
+                            <td align="right">${o.category.name}</td>
+                            <c:choose>
+                                <c:when test="${o.outAccount != null && o.category != null}">
+                                    <td class="text-danger" align="right">-<fmt:formatNumber type="currency" value="${o.sum}"/></td>
+                                </c:when>
+                                <c:when test="${o.inAccount != null && o.category != null}">
+                                    <td class="text-success" align="right">+<fmt:formatNumber type="currency" value="${o.sum}"/></td>
+                                </c:when>
+                                <c:otherwise>
+                                    <td align="right"><fmt:formatNumber type="currency" value="${o.sum}"/></td>
+                                </c:otherwise>
+                            </c:choose>
                         </tr>
                     </c:forEach>
                     </tbody>

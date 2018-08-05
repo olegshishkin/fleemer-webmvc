@@ -19,18 +19,37 @@
 
 // Date picker activator
 $(document).ready(function(){
-    var date_input=$('input[name="date"]'); //our date input has the name "date"
+    var date_input=$('input[name="operation.date"]'); //our date input has the name "date"
     var container=$('.bootstrap-iso form').length>0 ? $('.bootstrap-iso form').parent() : "body";
     var options={
-        format: 'dd.mm.yyyy',
+        format: 'yyyy-mm-dd',
         container: container,
         todayHighlight: true,
-        autoclose: true,
+        setDate: new Date(),
+        autoclose: true
     };
     date_input.datepicker(options);
-
-    var operationTypeSelectors = $('input[name="operationType"]');
-    for (var i = 0; i < operationTypeSelectors.length; i++) {
-        operationTypeSelectors[i].addEventListener("click", disableTransfer);
-    }
 });
+
+// operation type radiobuttons
+(function(){
+    jQuery("input[name=operationType]:radio").change(function() {
+        if (jQuery("#outcome").prop('checked')) {
+            jQuery("#inAccountName").prop('selectedIndex', 0);
+            jQuery("#inAccountName").prop('disabled', true);
+            jQuery("#outAccountName").prop('disabled', false);
+            jQuery("#categoryName").prop('disabled', false);
+        } else if (jQuery("#income").prop('checked')) {
+            jQuery("#outAccountName").prop('selectedIndex', 0);
+            jQuery("#inAccountName").prop('disabled', false);
+            jQuery("#outAccountName").prop('disabled', true);
+            jQuery("#categoryName").prop('disabled', false);
+        } else if (jQuery("#transfer").prop('checked')) {
+            jQuery("#categoryName").prop('selectedIndex', 0);
+            jQuery("#inAccountName").prop('disabled', false);
+            jQuery("#outAccountName").prop('disabled', false);
+            jQuery("#categoryName").prop('disabled', true);
+        }
+    })
+
+})();
