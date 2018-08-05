@@ -2,27 +2,20 @@ package com.fleemer.webmvc.web.controller;
 
 import static com.fleemer.webmvc.web.controller.CommonUtils.getPersonByEmail;
 
-import com.fleemer.webmvc.model.Account;
-import com.fleemer.webmvc.model.Category;
 import com.fleemer.webmvc.model.Operation;
 import com.fleemer.webmvc.model.Person;
-import com.fleemer.webmvc.model.enums.OperationType;
 import com.fleemer.webmvc.service.AccountService;
 import com.fleemer.webmvc.service.CategoryService;
 import com.fleemer.webmvc.service.OperationService;
 import com.fleemer.webmvc.service.PersonService;
-import com.fleemer.webmvc.web.form.OperationForm;
 import java.security.Principal;
-import java.util.ArrayList;
-import java.util.Collection;
-import javax.transaction.Transactional;
 import org.hibernate.Hibernate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.servlet.ModelAndView;
 
 @Controller
 @RequestMapping("/")
@@ -42,15 +35,14 @@ public class HomeController {
         this.operationService = operationService;
     }
 
-    @Transactional
+    @Transactional(readOnly = true)
     @GetMapping
     public String home(Model model, Principal principal) {
-        model.addAttribute("operation", new OperationForm());
-        model.addAttribute("operationTypes", OperationType.values());
+        model.addAttribute("operation", new Operation());
         Person person = getPersonByEmail(personService, principal.getName());
         populateModel(model, "accounts", person.getAccounts());
         populateModel(model, "categories", person.getCategories());
-        populateModel(model, "operations", operationService.findAllByAccount_PersonOrCategory_Person(person, person));
+        populateModel(model, "operations", operationService.findAll(person));
         return ROOT_VIEW;
     }
 

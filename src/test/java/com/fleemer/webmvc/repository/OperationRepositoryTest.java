@@ -9,10 +9,7 @@ import com.fleemer.webmvc.model.Operation;
 import com.github.springtestdbunit.DbUnitTestExecutionListener;
 import com.github.springtestdbunit.annotation.DatabaseSetup;
 import com.github.springtestdbunit.annotation.ExpectedDatabase;
-import java.time.LocalDateTime;
-import java.time.Month;
-import java.time.ZoneId;
-import java.time.ZonedDateTime;
+import java.time.*;
 import java.util.*;
 import javax.transaction.Transactional;
 import org.junit.Assert;
@@ -90,15 +87,15 @@ public class OperationRepositoryTest {
     public void findAll_sort() {
         List<Operation> expected = new ArrayList<>();
         expected.add(operations.get(2));
-        expected.add(operations.get(3));
-        expected.add(operations.get(5));
-        expected.add(operations.get(4));
         expected.add(operations.get(0));
+        expected.add(operations.get(7));
+        expected.add(operations.get(4));
         expected.add(operations.get(1));
         expected.add(operations.get(6));
-        expected.add(operations.get(7));
+        expected.add(operations.get(3));
+        expected.add(operations.get(5));
         expected.add(operations.get(8));
-        List<Operation> actual = repository.findAll(new Sort(Sort.Direction.DESC, "result"));
+        List<Operation> actual = repository.findAll(new Sort(Sort.Direction.DESC, "sum"));
         RepositoryAssertions.assertIterableEquals(expected, actual);
     }
 
@@ -110,10 +107,7 @@ public class OperationRepositoryTest {
     @Test
     @ExpectedDatabase(value = DATASETS_PATH + "save_new.xml")
     public void save_new() {
-        LocalDateTime localDateTime = LocalDateTime.of(2000, Month.FEBRUARY, 4, 3, 21, 1, 98000);
-        ZonedDateTime time = ZonedDateTime.of(localDateTime, ZoneId.of("Europe/Moscow"));
-        UUID uuid = UUID.fromString("269c4f87-ac8d-418d-9f67-26b233b285e8");
-        repository.save(createOperation(null, time, accounts.get(1), categories.get(6), 7.98, -7.98, uuid, "new comment"));
+        repository.save(createOperation(null, LocalDate.of(2000, Month.FEBRUARY, 4), accounts.get(1), null, categories.get(6), 7.98, "new comment"));
         repository.flush();
     }
 
@@ -129,15 +123,8 @@ public class OperationRepositoryTest {
     @Test
     @ExpectedDatabase(value = DATASETS_PATH + "save_all.xml")
     public void saveAll() {
-        LocalDateTime ldt1 = LocalDateTime.of(2018, Month.MAY, 14, 12, 20, 11, 87657000);
-        ZonedDateTime time1 = ZonedDateTime.of(ldt1, ZoneId.of("Europe/Moscow"));
-        UUID uuid1 = UUID.fromString("269c4f87-ac8d-418d-9f67-26b233b285e8");
-        Operation o1 = createOperation(null, time1, accounts.get(1), categories.get(6), 7.98, 7.98, uuid1, "new comment1");
-
-        LocalDateTime ldt2 = LocalDateTime.of(2018, Month.MAY, 14, 10, 20, 11, 444000);
-        ZonedDateTime time2 = ZonedDateTime.of(ldt2, ZoneId.of("Europe/Moscow"));
-        Operation o2 = createOperation(null, time2, accounts.get(0), categories.get(1), -17.98, -74.938, null, "new comment2");
-
+        Operation o1 = createOperation(null, LocalDate.of(2018, Month.MAY, 14), accounts.get(1), accounts.get(2), null, 7.98, "new comment1");
+        Operation o2 = createOperation(null, LocalDate.of(2018, Month.MAY, 14), null, accounts.get(0), categories.get(1), -17.98, "new comment2");
         Operation o = operations.get(3);
         o.setComment("Changed comment");
         repository.saveAll(List.of(o1, o2, o));

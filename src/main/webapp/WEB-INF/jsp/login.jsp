@@ -24,12 +24,10 @@
     </c:if>
     <label for="username" class="sr-only">Username</label>
     <input type="email" id="username" name="username" class="form-control" placeholder="Email address" required autofocus/>
-    <div class="valid-feedback">Correct</div>
     <div class="invalid-feedback">Please input your email address</div>
 
     <label for="password" class="sr-only">Password</label>
     <input type="password" id="password" name="password" class="form-control" placeholder="Password" required/>
-    <div class="valid-feedback">Correct</div>
     <div class="invalid-feedback">Please input password</div>
 
     <button type="submit" class="btn btn-outline-primary">Sign in</button>

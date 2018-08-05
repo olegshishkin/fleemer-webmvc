@@ -3,6 +3,8 @@ package com.fleemer.webmvc.model;
 import com.fleemer.webmvc.model.enums.CategoryType;
 import java.io.Serializable;
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -11,7 +13,7 @@ import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
 @Entity
-@Table(name = "categories", uniqueConstraints = {@UniqueConstraint(columnNames = {"id"})})
+@Table(uniqueConstraints = {@UniqueConstraint(columnNames = {"id"})})
 @Getter
 @Setter
 @NoArgsConstructor
@@ -22,9 +24,12 @@ public class Category implements Serializable {
     @Column(unique = true, nullable = false, updatable = false)
     private Long id;
 
+    @NotNull
+    @Size(min = 1, max = 255)
     @Column(nullable = false)
     private String name;
 
+    @NotNull
     @Column(nullable = false)
     private CategoryType type;
 

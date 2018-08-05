@@ -6,11 +6,10 @@ import static org.mockito.Mockito.*;
 
 import com.fleemer.webmvc.model.Person;
 import com.fleemer.webmvc.repository.PersonRepository;
+import com.fleemer.webmvc.service.implementation.PersonServiceImpl;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
-
-import com.fleemer.webmvc.service.implementation.PersonServiceImpl;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;

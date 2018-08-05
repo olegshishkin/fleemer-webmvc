@@ -16,7 +16,7 @@ import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
 @Entity
-@Table(name = "accounts", uniqueConstraints = {@UniqueConstraint(columnNames = {"id"})})
+@Table(uniqueConstraints = {@UniqueConstraint(columnNames = {"id"})})
 @Getter
 @Setter
 @NoArgsConstructor
@@ -26,6 +26,11 @@ public class Account implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(unique = true, nullable = false, updatable = false)
     private Long id;
+
+    @NotNull
+    @Size(min = 1, max = 255)
+    @Column(nullable = false)
+    private String name;
 
     @NotNull
     @Enumerated
@@ -38,14 +43,9 @@ public class Account implements Serializable {
     private Currency currency;
 
     @NotNull
-    @Size(min = 1, max = 255)
-    @Column(nullable = false)
-    private String name;
-
-    @NotNull
     @Digits(integer = 20, fraction = 10)
     @Column(precision = 20, scale = 10, nullable = false)
-    private BigDecimal sum;
+    private BigDecimal balance;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @OnDelete(action = OnDeleteAction.CASCADE)

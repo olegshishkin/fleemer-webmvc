@@ -2,9 +2,11 @@ package com.fleemer.webmvc.model;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
-import java.time.ZonedDateTime;
-import java.util.UUID;
+import java.time.LocalDate;
 import javax.persistence.*;
+import javax.validation.constraints.Digits;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -13,7 +15,7 @@ import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
 @Entity
-@Table(name = "operations", uniqueConstraints = {@UniqueConstraint(columnNames = {"id"})})
+@Table(uniqueConstraints = {@UniqueConstraint(columnNames = {"id"})})
 @Getter
 @Setter
 @NoArgsConstructor
@@ -24,28 +26,31 @@ public class Operation implements Serializable {
     @Column(unique = true, nullable = false, updatable = false)
     private Long id;
 
+    @NotNull
     @Column(nullable = false)
-    private ZonedDateTime time;
+    private LocalDate date;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @OnDelete(action = OnDeleteAction.CASCADE)
-    @JoinColumn
-    private Account account;
+    @JoinColumn(name = "in_account_id")
+    private Account inAccount;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @OnDelete(action = OnDeleteAction.CASCADE)
+    @JoinColumn(name = "out_account_id")
+    private Account outAccount;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @OnDelete(action = OnDeleteAction.CASCADE)
     @JoinColumn
     private Category category;
 
+    @NotNull
+    @Digits(integer = 20, fraction = 10)
     @Column(precision = 20, scale = 10, nullable = false)
     private BigDecimal sum;
 
-    @Column(precision = 20, scale = 10, nullable = false)
-    private BigDecimal result;
-
-    @Column(columnDefinition = "varchar(36)")
-    private UUID uuid; // Unique values for marking pair operations (transferring between accounts)
-
+    @Size(max = 255)
     @Column
     private String comment;
 }

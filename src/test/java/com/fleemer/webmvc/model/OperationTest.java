@@ -5,7 +5,6 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotEquals;
 
 import java.time.*;
-import java.util.UUID;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -15,23 +14,21 @@ public class OperationTest {
 
     @Before
     public void setUp() {
-        Account a1 = new Account();
-        a1.setId(1111L);
+        Account in1 = new Account();
+        in1.setId(1111L);
+        Account out1 = new Account();
+        out1.setId(11111L);
         Category c1 = new Category();
         c1.setId(3333L);
-        LocalDateTime localDateTime1 = LocalDateTime.of(1990, Month.JANUARY, 1, 10, 20, 30);
-        ZonedDateTime time1 = ZonedDateTime.of(localDateTime1, ZoneId.of("Asia/Tokyo"));
-        UUID uuid1 = UUID.fromString("f4780c3e-eb8c-4e6e-994a-3e2b144b9e1e");
-        o1 = createOperation(11L, time1, a1, c1, 123.12, 345.0, uuid1, "comment1");
+        o1 = createOperation(11L, LocalDate.of(1990, Month.JANUARY, 1), in1, out1, c1, 123.12, "comment1");
 
-        Account a2 = new Account();
-        a2.setId(2222L);
+        Account in2 = new Account();
+        in2.setId(2222L);
+        Account out2 = new Account();
+        out2.setId(22222L);
         Category c2 = new Category();
         c2.setId(4444L);
-        LocalDateTime localDateTime2 = LocalDateTime.of(2000, Month.MARCH, 8, 2, 11, 21);
-        ZonedDateTime time2 = ZonedDateTime.of(localDateTime2, ZoneId.of("America/Phoenix"));
-        UUID uuid2 = UUID.fromString("faadf71e-d25d-44b6-b017-a3ab21f1da3c");
-        o2 = createOperation(22L, time2, a2, c2, 0.008, 1.87, uuid2, "comment2");
+        o2 = createOperation(22L, LocalDate.of(2000, Month.MARCH, 8), in2, out2, c2, 0.008, "comment2");
     }
 
     @Test

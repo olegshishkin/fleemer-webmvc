@@ -6,11 +6,10 @@ import static org.mockito.Mockito.*;
 
 import com.fleemer.webmvc.model.Operation;
 import com.fleemer.webmvc.repository.OperationRepository;
+import com.fleemer.webmvc.service.implementation.OperationServiceImpl;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
-
-import com.fleemer.webmvc.service.implementation.OperationServiceImpl;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;

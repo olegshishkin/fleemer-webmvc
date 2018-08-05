@@ -8,9 +8,8 @@ import com.fleemer.webmvc.model.enums.AccountType;
 import com.fleemer.webmvc.model.enums.CategoryType;
 import com.fleemer.webmvc.model.enums.Currency;
 import java.math.BigDecimal;
-import java.time.ZonedDateTime;
+import java.time.LocalDate;
 import java.util.Set;
-import java.util.UUID;
 
 public class EntityCreator {
     public static Account createAccount(Long id, AccountType type, Currency currency, String name, BigDecimal sum,
@@ -20,7 +19,7 @@ public class EntityCreator {
         a.setType(type);
         a.setCurrency(currency);
         a.setName(name);
-        a.setSum(sum);
+        a.setBalance(sum);
         a.setPerson(person);
         return a;
     }
@@ -34,16 +33,15 @@ public class EntityCreator {
         return c;
     }
 
-    public static Operation createOperation(Long id, ZonedDateTime time, Account account, Category category, double sum,
-                                            double result, UUID uuid, String comment) {
+    public static Operation createOperation(Long id, LocalDate date, Account inAccount, Account outAccount,
+                                            Category category, double sum, String comment) {
         Operation o = new Operation();
         o.setId(id);
-        o.setAccount(account);
+        o.setDate(date);
+        o.setInAccount(inAccount);
+        o.setOutAccount(outAccount);
         o.setCategory(category);
-        o.setTime(time);
-        o.setUuid(uuid);
         o.setSum(new BigDecimal(String.valueOf(sum)));
-        o.setResult(new BigDecimal(String.valueOf(result)));
         o.setComment(comment);
         return o;
     }

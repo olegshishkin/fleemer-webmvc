@@ -12,7 +12,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Entity
-@Table(name = "persons", uniqueConstraints = {@UniqueConstraint(columnNames = {"id", "email"})})
+@Table(uniqueConstraints = {@UniqueConstraint(columnNames = {"id", "email"})})
 @Getter
 @Setter
 @NoArgsConstructor

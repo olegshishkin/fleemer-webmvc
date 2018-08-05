@@ -12,19 +12,23 @@ import org.junit.Assert;
 
 class RepositoryAssertions {
     static void assertEquals(Account expected, Account actual) {
-        Assert.assertNotNull(expected);
-        Assert.assertNotNull(actual);
+        if (expected == null || actual == null) {
+            Assert.assertTrue(expected == null & actual == null);
+            return;
+        }
         Assert.assertEquals(expected.getId(), actual.getId());
         Assert.assertEquals(expected.getType(), actual.getType());
         Assert.assertEquals(expected.getCurrency(), actual.getCurrency());
         Assert.assertEquals(expected.getName(), actual.getName());
         Assert.assertEquals(expected.getPerson(), actual.getPerson());
-        Assert.assertThat(actual.getSum(), comparesEqualTo(expected.getSum()));
+        Assert.assertThat(actual.getBalance(), comparesEqualTo(expected.getBalance()));
     }
 
     static void assertEquals(Person expected, Person actual) {
-        Assert.assertNotNull(expected);
-        Assert.assertNotNull(actual);
+        if (expected == null || actual == null) {
+            Assert.assertTrue(expected == null & actual == null);
+            return;
+        }
         Assert.assertEquals(expected.getId(), actual.getId());
         Assert.assertEquals(expected.getFirstName(), actual.getFirstName());
         Assert.assertEquals(expected.getLastName(), actual.getLastName());
@@ -35,8 +39,10 @@ class RepositoryAssertions {
     }
 
     static void assertEquals(Category expected, Category actual) {
-        Assert.assertNotNull(expected);
-        Assert.assertNotNull(actual);
+        if (expected == null || actual == null) {
+            Assert.assertTrue(expected == null & actual == null);
+            return;
+        }
         Assert.assertEquals(expected.getId(), actual.getId());
         Assert.assertEquals(expected.getName(), actual.getName());
         Assert.assertEquals(expected.getType(), actual.getType());
@@ -44,15 +50,16 @@ class RepositoryAssertions {
     }
 
     static void assertEquals(Operation expected, Operation actual) {
-        Assert.assertNotNull(expected);
-        Assert.assertNotNull(actual);
+        if (expected == null || actual == null) {
+            Assert.assertTrue(expected == null & actual == null);
+            return;
+        }
         Assert.assertEquals(expected.getId(), actual.getId());
-        Assert.assertEquals(expected.getTime(), actual.getTime());
-        assertEquals(expected.getAccount(), actual.getAccount());
+        Assert.assertEquals(expected.getDate(), actual.getDate());
+        assertEquals(expected.getInAccount(), actual.getInAccount());
+        assertEquals(expected.getOutAccount(), actual.getOutAccount());
         assertEquals(expected.getCategory(), actual.getCategory());
         Assert.assertThat(actual.getSum(), comparesEqualTo(expected.getSum()));
-        Assert.assertThat(actual.getResult(), comparesEqualTo(expected.getResult()));
-        Assert.assertEquals(expected.getUuid(), actual.getUuid());
         Assert.assertEquals(expected.getComment(), actual.getComment());
     }
 
@@ -60,8 +67,7 @@ class RepositoryAssertions {
         if (expected == actual) {
             return;
         }
-        Assert.assertNotNull(expected);
-        Assert.assertNotNull(actual);
+        Assert.assertTrue(expected != null & actual != null);
         Iterator<T> expectedIterator = expected.iterator();
         Iterator<T> actualIterator = actual.iterator();
         while (expectedIterator.hasNext() && actualIterator.hasNext()) {

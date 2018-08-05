@@ -128,7 +128,7 @@ public class AccountRepositoryTest {
     @Test
     @ExpectedDatabase(value = DATASETS_PATH + "delete_by_id.xml")
     public void deleteById() {
-        repository.deleteById(1L);
+        repository.deleteById(2L);
         repository.flush();
     }
 

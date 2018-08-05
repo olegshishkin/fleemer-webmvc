@@ -1,5 +1,4 @@
--- persons table
-create table if not exists `persons`
+create table if not exists `person`
 (
   `id`            bigint unsigned auto_increment unique primary key,
   `first_name`    varchar(255)    not null,
@@ -8,43 +7,41 @@ create table if not exists `persons`
   `hash`          varchar(255)    not null
 ) engine = InnoDB;
 
--- accounts table
-create table if not exists `accounts`
+create table if not exists `account`
 (
   `id`            bigint unsigned auto_increment unique primary key,
   `type`          tinyint         not null,
   `currency`      tinyint         not null,
   `name`          varchar(255)    not null,
-  `sum`           decimal(20, 10) not null,
+  `balance`       decimal(20, 10) not null,
   `person_id`     bigint unsigned not null,
-  foreign key (`person_id`) references `persons` (`id`),
+  foreign key (`person_id`) references `person` (`id`),
   index (`person_id`)
 ) engine = InnoDB;
 
--- categories table
-create table if not exists `categories`
+create table if not exists `category`
 (
   `id`            bigint unsigned auto_increment unique primary key,
   `name`          varchar(255)    not null,
   `type`          tinyint         not null,
   `person_id`     bigint unsigned not null,
-  foreign key (`person_id`) references `persons` (`id`),
+  foreign key (`person_id`) references `person` (`id`),
   index (`person_id`)
 ) engine = InnoDB;
 
--- operations table
-create table if not exists `operations`
+create table if not exists `operation`
 (
-  `id`            bigint unsigned auto_increment unique primary key,
-  `time`          timestamp default CURRENT_TIMESTAMP not null on update CURRENT_TIMESTAMP,
-  `account_id`    bigint unsigned                     not null,
-  `category_id`   bigint unsigned                     not null,
-  `sum`           decimal(20, 10)                     not null,
-  `result`        decimal(20, 10)                     not null,
-  `uuid`          varchar(32)                         null,
-  `comment`       varchar(255)                        null,
-  foreign key (`account_id`) references `accounts` (`id`),
-  foreign key (`category_id`) references `categories` (`id`),
-  index (`account_id`),
+  `id`              bigint unsigned auto_increment unique primary key,
+  `date`            date            not null,
+  `in_account_id`   bigint unsigned null,
+  `out_account_id`  bigint unsigned null,
+  `category_id`     bigint unsigned null,
+  `sum`             decimal(20, 10) not null,
+  `comment`         varchar(255)    null,
+  foreign key (`in_account_id`) references `account` (`id`),
+  foreign key (`out_account_id`) references `account` (`id`),
+  foreign key (`category_id`) references `category` (`id`),
+  index (`in_account_id`),
+  index (`out_account_id`),
   index (`category_id`)
 ) engine = InnoDB;

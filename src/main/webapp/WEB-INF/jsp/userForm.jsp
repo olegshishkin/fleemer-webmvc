@@ -16,9 +16,8 @@
                             <form:label path="email">Email</form:label>
                             <form:input path="email" type="email" cssClass="form-control"
                                    pattern="^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$" required="true" autofocus="true"/>
-                            <form:errors path="email" cssClass="text-danger"/>
+                            <form:errors path="email" cssClass="invalid-feedback"/>
                             <div class="invalid-feedback">The field cannot be empty</div>
-                            <div class="valid-feedback">Correct</div>
                         </div>
                     </div>
 
@@ -26,9 +25,8 @@
                         <div class="col-md-12 mb-3">
                             <form:label path="firstName">Firstname</form:label>
                             <form:input path="firstName" type="text" cssClass="form-control" required="true"/>
-                            <form:errors path="firstName" cssClass="text-danger"/>
+                            <form:errors path="firstName" cssClass="invalid-feedback"/>
                             <div class="invalid-feedback">The field cannot be empty</div>
-                            <div class="valid-feedback">Correct</div>
                         </div>
                     </div>
 
@@ -36,8 +34,7 @@
                         <div class="col-md-12 mb-3">
                             <form:label path="lastName">Lastname</form:label>
                             <form:input path="lastName" type="text" cssClass="form-control"/>
-                            <form:errors path="lastName" cssClass="text-danger"/>
-                            <div class="valid-feedback">Correct</div>
+                            <form:errors path="lastName" cssClass="invalid-feedback"/>
                         </div>
                     </div>
 
@@ -45,9 +42,8 @@
                         <div class="col-md-12 mb-3">
                             <form:label path="hash">Password</form:label>
                             <form:password path="hash" cssClass="form-control" required="true"/>
-                            <form:errors path="hash" cssClass="text-danger"/>
+                            <form:errors path="hash" cssClass="invalid-feedback"/>
                             <div class="invalid-feedback">The field cannot be empty</div>
-                            <div class="valid-feedback">Correct</div>
                         </div>
                     </div>
 

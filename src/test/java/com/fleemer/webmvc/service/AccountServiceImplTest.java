@@ -6,11 +6,10 @@ import static org.mockito.Mockito.*;
 
 import com.fleemer.webmvc.model.Account;
 import com.fleemer.webmvc.repository.AccountRepository;
+import com.fleemer.webmvc.service.implementation.AccountServiceImpl;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
-
-import com.fleemer.webmvc.service.implementation.AccountServiceImpl;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
