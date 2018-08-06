@@ -1,13 +1,14 @@
 package com.fleemer.webmvc.config;
 
+import java.net.URISyntaxException;
 import java.util.Properties;
 import javax.persistence.EntityManagerFactory;
 import javax.sql.DataSource;
+import org.apache.commons.dbcp.BasicDataSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.*;
 import org.springframework.core.env.Environment;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
-import org.springframework.jdbc.datasource.lookup.JndiDataSourceLookup;
 import org.springframework.orm.jpa.JpaTransactionManager;
 import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
 import org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter;
@@ -47,10 +48,15 @@ public class DataConfig {
     }
 
     @Bean(destroyMethod = "")
-    public DataSource dataSource() {
-        JndiDataSourceLookup lookup = new JndiDataSourceLookup();
-        lookup.setResourceRef(true);
-        return lookup.getDataSource(environment.getProperty(DATA_SOURCE_JNDI_NAME));
+    public DataSource dataSource() throws URISyntaxException {
+        String dbUrl = System.getenv("JDBC_DATABASE_URL");
+        String username = System.getenv("JDBC_DATABASE_USERNAME");
+        String password = System.getenv("JDBC_DATABASE_PASSWORD");
+        BasicDataSource basicDataSource = new BasicDataSource();
+        basicDataSource.setUrl(dbUrl);
+        basicDataSource.setUsername(username);
+        basicDataSource.setPassword(password);
+        return basicDataSource;
     }
 
     private Properties getJpaProperties() {

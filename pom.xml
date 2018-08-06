@@ -19,6 +19,7 @@
       <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 
       <!-- dependencies versions -->
+      <common.dbcp.version>1.4</common.dbcp.version>
       <dbunit.version>2.4.9</dbunit.version>
       <h2.version>1.4.197</h2.version>
       <hamcrest.version>2.0.0.0</hamcrest.version>
@@ -89,6 +90,13 @@
           <groupId>mysql</groupId>
           <artifactId>mysql-connector-java</artifactId>
           <version>${mysql.version}</version>
+      </dependency>
+
+      <!-- https://mvnrepository.com/artifact/commons-dbcp/commons-dbcp -->
+      <dependency>
+          <groupId>commons-dbcp</groupId>
+          <artifactId>commons-dbcp</artifactId>
+          <version>${common.dbcp.version}</version>
       </dependency>
 
       <!-- https://mvnrepository.com/artifact/org.projectlombok/lombok -->
