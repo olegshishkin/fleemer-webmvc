@@ -13,83 +13,83 @@ import org.springframework.transaction.annotation.Transactional;
 public abstract class AbstractService <T, ID, R extends JpaRepository<T, ID>> implements BaseService<T, ID> {
     @Override
     public long count() {
-        return getRepository().count();
+        return getOperationRepository().count();
     }
 
     @Override
     public boolean existsById(ID id) {
-        return getRepository().existsById(id);
+        return getOperationRepository().existsById(id);
     }
 
     @Override
     public T getOne(ID id) {
-        return getRepository().getOne(id);
+        return getOperationRepository().getOne(id);
     }
 
     @Override
     public Optional<T> findById(ID id) {
-        return getRepository().findById(id);
+        return getOperationRepository().findById(id);
     }
 
     @Override
     public Iterable<T> findAllById(Iterable<ID> ids) {
-        return getRepository().findAllById(ids);
+        return getOperationRepository().findAllById(ids);
     }
 
     @Override
     public Page<T> findAll(Pageable pageable) {
-        return getRepository().findAll(pageable);
+        return getOperationRepository().findAll(pageable);
     }
 
     @Override
     public Iterable<T> findAll() {
-        return getRepository().findAll();
+        return getOperationRepository().findAll();
     }
 
     @Override
     public Iterable<T> findAll(Sort sort) {
-        return getRepository().findAll(sort);
+        return getOperationRepository().findAll(sort);
     }
 
     @Override
     public <S extends T> S save(S entity) throws ServiceException {
-        return getRepository().save(entity);
+        return getOperationRepository().save(entity);
     }
 
     @Override
     public <S extends T> Iterable<S> saveAll(Iterable<S> entities) {
-        return getRepository().saveAll(entities);
+        return getOperationRepository().saveAll(entities);
     }
 
     @Override
     public void deleteById(ID id) {
-        getRepository().deleteById(id);
+        getOperationRepository().deleteById(id);
     }
 
     @Override
     public void delete(T entity) {
-        getRepository().delete(entity);
+        getOperationRepository().delete(entity);
     }
 
     @Override
     public void deleteAll(Iterable<? extends T> entities) {
-        getRepository().deleteAll(entities);
+        getOperationRepository().deleteAll(entities);
     }
 
     @Override
     public void deleteAll() {
-        getRepository().deleteAll();
+        getOperationRepository().deleteAll();
     }
 
     @Override
     public void deleteInBatch(Iterable<T> entities) {
-        getRepository().deleteInBatch(entities);
+        getOperationRepository().deleteInBatch(entities);
     }
 
     @Override
     public void deleteAllInBatch() {
-        getRepository().deleteAllInBatch();
+        getOperationRepository().deleteAllInBatch();
     }
 
-    protected abstract R getRepository();
+    protected abstract R getOperationRepository();
 }

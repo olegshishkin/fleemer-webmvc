@@ -46,11 +46,11 @@ class RepositoryTestingPopulationClass {
     }
 
     private List<Person> getTestPeople() {
-        Person p1 = createPerson(1L, "FirstName1", "LastName1", "mail100@mail.ma", "hash1", new HashSet<>(), new HashSet<>());
-        Person p2 = createPerson(2L, "FirstName2", "LastName2", "mail95@mail.ma", "hash2", new HashSet<>(), new HashSet<>());
-        Person p3 = createPerson(3L, "FirstName3", "LastName3", "mail3@mail.ma", "hash3", new HashSet<>(), new HashSet<>());
-        Person p4 = createPerson(4L, "FirstName4", "LastName4", "mail5@mail.ma", "hash4", new HashSet<>(), new HashSet<>());
-        Person p5 = createPerson(5L, "FirstName5", "LastName5", "mail@mail.ma", "hash5", new HashSet<>(), new HashSet<>());
+        Person p1 = createPerson(1L, "FirstName1", "LastName1", "mail100@mail.ma", "hash1");
+        Person p2 = createPerson(2L, "FirstName2", "LastName2", "mail95@mail.ma", "hash2");
+        Person p3 = createPerson(3L, "FirstName3", "LastName3", "mail3@mail.ma", "hash3");
+        Person p4 = createPerson(4L, "FirstName4", "LastName4", "mail5@mail.ma", "hash4");
+        Person p5 = createPerson(5L, "FirstName5", "LastName5", "mail@mail.ma", "hash5");
         return List.of(p1, p2, p3, p4, p5);
     }
 
@@ -91,27 +91,27 @@ class RepositoryTestingPopulationClass {
         Category c7 = createCategory(7L, "Salary", CategoryType.INCOME, people.get(3));
         return List.of(c1, c2, c3, c4, c5, c6, c7);
     }
-
+//todo
     private void peopleCollectionInitialisation() {
-        Person person1 = people.get(0);
-        Set<Account> accountSet1 = new HashSet<>(List.of(accounts.get(2)));
-        person1.setAccounts(accountSet1);
-        Set<Category> categorySet1 = new HashSet<>(List.of(categories.get(0), categories.get(2), categories.get(4)));
-        person1.setCategories(categorySet1);
-
-        Person person2 = people.get(1);
-        Set<Account> accountSet2 = new HashSet<>(List.of(accounts.get(0)));
-        person2.setAccounts(accountSet2);
-        Set<Category> categorySet2 = new HashSet<>(List.of(categories.get(3), categories.get(5)));
-        person2.setCategories(categorySet2);
-
-        Set<Category> categorySet3 = new HashSet<>(List.of(categories.get(1)));
-        people.get(2).setCategories(categorySet3);
-
-        Person person4 = people.get(3);
-        Set<Account> accountSet4 = new HashSet<>(List.of(accounts.get(1)));
-        person4.setAccounts(accountSet4);
-        Set<Category> categorySet4 = new HashSet<>(List.of(categories.get(6)));
-        person4.setCategories(categorySet4);
+//        Person person1 = people.get(0);
+//        Set<Account> accountSet1 = new HashSet<>(List.of(accounts.get(2)));
+//        person1.setAccounts(accountSet1);
+//        Set<Category> categorySet1 = new HashSet<>(List.of(categories.get(0), categories.get(2), categories.get(4)));
+//        person1.setCategories(categorySet1);
+//
+//        Person person2 = people.get(1);
+//        Set<Account> accountSet2 = new HashSet<>(List.of(accounts.get(0)));
+//        person2.setAccounts(accountSet2);
+//        Set<Category> categorySet2 = new HashSet<>(List.of(categories.get(3), categories.get(5)));
+//        person2.setCategories(categorySet2);
+//
+//        Set<Category> categorySet3 = new HashSet<>(List.of(categories.get(1)));
+//        people.get(2).setCategories(categorySet3);
+//
+//        Person person4 = people.get(3);
+//        Set<Account> accountSet4 = new HashSet<>(List.of(accounts.get(1)));
+//        person4.setAccounts(accountSet4);
+//        Set<Category> categorySet4 = new HashSet<>(List.of(categories.get(6)));
+//        person4.setCategories(categorySet4);
     }
 }

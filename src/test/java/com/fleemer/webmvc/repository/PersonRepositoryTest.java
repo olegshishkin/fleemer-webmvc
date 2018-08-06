@@ -99,25 +99,9 @@ public class PersonRepositoryTest {
     }
 
     @Test
-    @ExpectedDatabase(value = DATASETS_PATH + "save_new_without_accounts_and_categories.xml")
-    public void save_newWithoutAccountsAndCategories() {
-        Person person = createPerson(null, "test firstname", "test lastname", "test email", "test hash", null, null);
-        repository.save(person);
-        repository.flush();
-    }
-
-    @Test
-    @ExpectedDatabase(value = DATASETS_PATH + "save_new_with_accounts_and_categories.xml")
-    public void save_newWithAccountsAndCategories() {
-        Account newAccount = createAccount(null, AccountType.DEBT, Currency.RUB, "new account 1", new BigDecimal("0.01"), null);
-        Category newCategory = createCategory(null, "new category", CategoryType.OUTCOME, null);
-        Set<Account> accountSet = new HashSet<>();
-        accountSet.add(newAccount);
-        Set<Category> categorySet = new HashSet<>();
-        categorySet.add(newCategory);
-        Person person = createPerson(null, "new firstname", "new lastname", "new email", "new hash", accountSet, categorySet);
-        newAccount.setPerson(person);
-        newCategory.setPerson(person);
+    @ExpectedDatabase(value = DATASETS_PATH + "save_new.xml")
+    public void save_new() {
+        Person person = createPerson(null, "test firstname", "test lastname", "test email", "test hash");
         repository.save(person);
         repository.flush();
     }
@@ -134,8 +118,8 @@ public class PersonRepositoryTest {
     @Test
     @ExpectedDatabase(value = DATASETS_PATH + "save_all.xml")
     public void saveAll() {
-        Person newPerson1 = createPerson(null, "New Firstname1", "New Lastname1", "New email1", "New hash1", null, null);
-        Person newPerson2 = createPerson(null, "New Firstname2", "New Lastname2", "New email2", "New hash2", null, null);
+        Person newPerson1 = createPerson(null, "New Firstname1", "New Lastname1", "New email1", "New hash1");
+        Person newPerson2 = createPerson(null, "New Firstname2", "New Lastname2", "New email2", "New hash2");
         Person person = people.get(1);
         person.setEmail("Changed email");
         repository.saveAll(List.of(newPerson1, newPerson2, person));

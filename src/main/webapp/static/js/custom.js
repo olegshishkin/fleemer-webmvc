@@ -29,6 +29,9 @@ $(document).ready(function(){
         autoclose: true
     };
     date_input.datepicker(options);
+    setTotalBalance();
+    fillAccountsList();
+    fillTable(0, 30);
 });
 
 // operation type radiobuttons
@@ -53,3 +56,77 @@ $(document).ready(function(){
     })
 
 })();
+
+function setTotalBalance(){
+    $.ajax({
+        url: '/balance.json',
+        success: function(result){
+            $("#totalBalance").html(result);
+        }
+    });
+}
+
+// Appends account summary
+function fillAccountsList() {
+    $.ajax({
+        url: '/accountsList.json',
+        success: function (result) {
+            $.each(result,
+                function appendAccountSummary(key, value) {
+                    var newSummary = $('#accountSummary').clone(true).addClass('list-group-item').removeAttr('id');
+                    $(newSummary).find('h6').html(value.name);
+                    $(newSummary).find('small').html(value.type);
+                    $(newSummary).find('span').html(value.balance);
+                    $('#accountSummaryPlace').append(newSummary);
+            });
+        }
+    })
+}
+
+// Appends operation table
+function fillTable(page, size) {
+    $.ajax({
+        url: '/operation.json',
+        data: { page: page, size: size },
+        success: function (result) {
+            $('#operationTable').empty();
+            var openTag = '<td align="right">';
+            var closeTag = '</td>';
+            var table = $('#operationTableSnippet').clone(true).removeAttr('id');
+            $.each(result,
+                function addOperationRow(key, value) {
+                    var sum = value.sum;
+                    var row = '<tr>' + openTag + value.date + closeTag + openTag;
+                    var outAccount = value.outAccount;
+                    if (isNotNull(outAccount)) {
+                        row = row + outAccount.name;
+                    }
+                    row = row + closeTag + openTag;
+                    var inAccount = value.inAccount;
+                    if (isNotNull(inAccount)) {
+                        row = row + inAccount.name;
+                    }
+                    row = row + closeTag + openTag;
+                    var category = value.category;
+                    if (isNotNull(category)) {
+                        row = row + category.name;
+                    }
+                    row = row + closeTag;
+                    if (isNotNull(outAccount) & isNotNull(category)) {
+                        row = row + '<td align="right" class="text-danger">-' + sum;
+                    } else if (isNotNull(inAccount) & isNotNull(category)) {
+                        row = row + '<td align="right" class="text-success">+' + sum;
+                    } else {
+                        row = row + openTag + sum;
+                    }
+                    row = row + closeTag + '</tr>';
+                    $(table).find('tbody').append(row);
+                });
+            $('#operationTable').append(table);
+        }
+    });
+}
+
+function isNotNull(value) {
+    return value != undefined & value != 'null';
+}

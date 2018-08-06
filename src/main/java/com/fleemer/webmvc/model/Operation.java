@@ -1,5 +1,7 @@
 package com.fleemer.webmvc.model;
 
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.fleemer.webmvc.model.serializer.LocalDateSerializer;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.time.LocalDate;
@@ -27,22 +29,23 @@ public class Operation implements Serializable {
     @Column(unique = true, nullable = false, updatable = false)
     private Long id;
 
+    @JsonSerialize(using = LocalDateSerializer.class)
     @NotNull
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     @Column(nullable = false)
     private LocalDate date;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne
     @OnDelete(action = OnDeleteAction.CASCADE)
     @JoinColumn(name = "in_account_id")
     private Account inAccount;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne
     @OnDelete(action = OnDeleteAction.CASCADE)
     @JoinColumn(name = "out_account_id")
     private Account outAccount;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne
     @OnDelete(action = OnDeleteAction.CASCADE)
     @JoinColumn
     private Category category;

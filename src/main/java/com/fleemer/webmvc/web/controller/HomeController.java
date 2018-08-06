@@ -7,21 +7,14 @@ import com.fleemer.webmvc.model.Person;
 import com.fleemer.webmvc.service.*;
 import com.fleemer.webmvc.service.exception.ServiceException;
 import com.fleemer.webmvc.web.form.OperationForm;
-import java.math.BigDecimal;
 import java.security.Principal;
-import java.util.ArrayList;
 import java.util.List;
 import javax.validation.Valid;
-import org.hibernate.Hibernate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
 @Controller
 @RequestMapping("/")
@@ -41,20 +34,18 @@ public class HomeController {
         this.operationService = operationService;
     }
 
-    @Transactional(readOnly = true)
     @GetMapping
     public String home(Model model, Principal principal) {
         model.addAttribute("operation", new OperationForm());
-        Person person = personService.findByEmail(principal.getName()).orElseThrow();
+        Person person = getCurrentPerson(principal);
         fillModel(model, person);
         return ROOT_VIEW;
     }
 
-    @Transactional
     @PostMapping("/operation/new")
     public String newOperation(@Valid @ModelAttribute OperationForm form, BindingResult result, Model model,
                                Principal principal) throws ServiceException {
-        Person person = personService.findByEmail(principal.getName()).orElseThrow();
+        Person person = getCurrentPerson(principal);
         fillModel(model, person);
         if (result.hasErrors()) {
             return ROOT_VIEW;
@@ -64,22 +55,35 @@ public class HomeController {
         return "redirect:/";
     }
 
-    @GetMapping("totalAmount")
-    public double getTotalAmount(Principal principal) {
-        Person person = personService.findByEmail(principal.getName()).orElseThrow();
-        BigDecimal total = BigDecimal.ZERO;
-        person.getAccounts().forEach(x -> total.add(x.getBalance()));
-        return total.doubleValue();
+    @ResponseBody
+    @GetMapping("/balance")
+    public double balance(Principal principal) {
+        Person person = getCurrentPerson(principal);
+        return accountService.getTotalBalance(person).doubleValue();
+    }
+
+    @ResponseBody
+    @GetMapping(value = "/operation", params = {"page", "size"})
+    public List<Operation> getOperations(@RequestParam("page") int page, @RequestParam("size") int size,
+                                         Principal principal) {
+        return operationService.findAll(getCurrentPerson(principal), page, size);
+    }
+
+    @ResponseBody
+    @GetMapping("/accountsList")
+    public List<Account> getAccounts(Principal principal) {
+        Person person = getCurrentPerson(principal);
+        return accountService.findAll(person);
+    }
+
+    private Person getCurrentPerson(Principal principal) {
+        return personService.findByEmail(principal.getName()).orElseThrow();
     }
 
     private void fillModel(Model model, Person person) {
-        List<String> accounts = new ArrayList<>();
-        person.getAccounts().forEach(x -> accounts.add(x.getName()));
-        List<String> categories = new ArrayList<>();
-        person.getCategories().forEach(x -> categories.add(x.getName()));
-        fillModel(model, "accounts", accounts);
-        fillModel(model, "categories", categories);
-        fillModel(model, "operations", operationService.findAll(person));
+        model.addAttribute("accounts", accountService.findAll(person));
+        model.addAttribute("categories", categoryService.findAll(person));
+        model.addAttribute("operations", operationService.findAll(person));
     }
 
     private Operation getFilledOperation(OperationForm form, Person person) {
@@ -91,10 +95,5 @@ public class HomeController {
         operation.setOutAccount(outAccount);
         operation.setCategory(category);
         return operation;
-    }
-
-    private static void fillModel(Model model, String attribute, Iterable<?> collection) {
-        Hibernate.initialize(collection);
-        model.addAttribute(attribute, collection);
     }
 }

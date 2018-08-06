@@ -4,37 +4,22 @@
 <%@ page contentType="text/html;charset=UTF-8" %>
 <%@include file="header.jsp" %>
 <jsp:include page="navbar.jsp"><jsp:param name="title" value="Home"/></jsp:include>
-
-<script type="text/javascript">
-    function disableTransfer(){
-        var tagForDisable;
-        var tagForEnable;
-        if (operationTypeSelector.id == 'outcome') {
-            tagForDisable = document.getElementById("category");
-        }
-        tagForDisable.disabled = true;
-    }
-</script>
 <main role="main" class="container">
     <div class="container">
         <div class="row">
             <div class="col-md-4">
                 <h4 class="d-flex justify-content-between align-items-center mb-3">
-                    <span class="text-muted">Total amount</span>
-                    <span class="badge badge-secondary badge-pill">3</span>
+                    <span class="text-muted">Total balance</span>
+                    <span id="totalBalance" class="badge badge-secondary badge-pill">3</span>
                 </h4>
-                <ul class="list-group mb-3">
-                    <li class="list-group-item d-flex justify-content-between lh-condensed">
-                        <div>
-                            <h6 class="my-0">Product name</h6>
-                            <small class="text-muted">Brief description</small>
-                        </div>
-                        <span class="text-muted">12</span>
-                    </li>
-                </ul>
+                <ul id="accountSummaryPlace" class="list-group mb-3"></ul>
             </div>
 
             <div class="col-md-8">
+                <div class="text-center">
+                    <h5 class="text-center">Add operation</h5>
+                </div>
+
                 <div class="d-block my-3 text-center">
                     <div class="custom-control custom-radio custom-control-inline">
                         <input id="outcome" name="operationType" type="radio" class="custom-control-input" checked required>
@@ -55,14 +40,14 @@
                         <div class="col-md-6 mb-3">
                             <form:select path="outAccountName" cssClass="custom-select d-block w-100">
                                 <form:option value="" label="Select account"/>
-                                <form:options items="${accounts}"/>
+                                <form:options items="${accounts}" itemValue="name" itemLabel="name"/>
                             </form:select>
                             <form:errors path="outAccountName" cssClass="text-danger"/>
                         </div>
                         <div class="col-md-6 mb-3">
                             <form:select path="inAccountName" cssClass="custom-select d-block w-100" disabled="true">
                                 <form:option value="" label="Select account"/>
-                                <form:options items="${accounts}"/>
+                                <form:options items="${accounts}" itemValue="name" itemLabel="name"/>
                             </form:select>
                             <form:errors path="inAccountName" cssClass="text-danger"/>
                         </div>
@@ -72,7 +57,7 @@
                         <div class="col-md-12 mb-3">
                             <form:select path="categoryName" cssClass="custom-select d-block w-100">
                                 <form:option value="" label="Select category"/>
-                                <form:options items="${categories}"/>
+                                <form:options items="${categories}" itemValue="name" itemLabel="name"/>
                             </form:select>
                             <form:errors path="categoryName" cssClass="text-danger"/>
                         </div>
@@ -113,53 +98,44 @@
         </div>
 
         <div class="row">
-            <div class="col-md-12 mb-3">
-                <table class="table table-hover">
-                    <thead align="right">
-                    <tr>
-                        <th scope="col">Date</th>
-                        <th scope="col">From account</th>
-                        <th scope="col">To account</th>
-                        <th scope="col">Category</th>
-                        <th scope="col">Sum</th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    <c:forEach items="${operations}" var="o">
-                        <tr>
-                            <td align="right">${o.date}</td>
-                            <td align="right">${o.outAccount.name}</td>
-                            <td align="right">${o.inAccount.name}</td>
-                            <td align="right">${o.category.name}</td>
-                            <c:choose>
-                                <c:when test="${o.outAccount != null && o.category != null}">
-                                    <td class="text-danger" align="right">-<fmt:formatNumber type="currency" value="${o.sum}"/></td>
-                                </c:when>
-                                <c:when test="${o.inAccount != null && o.category != null}">
-                                    <td class="text-success" align="right">+<fmt:formatNumber type="currency" value="${o.sum}"/></td>
-                                </c:when>
-                                <c:otherwise>
-                                    <td align="right"><fmt:formatNumber type="currency" value="${o.sum}"/></td>
-                                </c:otherwise>
-                            </c:choose>
-                        </tr>
-                    </c:forEach>
-                    </tbody>
-                </table>
-            </div>
+            <div id="operationTable" class="col-md-12 mb-3"></div>
         </div>
 
         <div class="row">
             <div class="col-md-12 mb-3">
                 <nav>
                     <ul class="pagination justify-content-center">
-                        <li class="page-item disabled"><a class="page-link" href="#" tabindex="-1">Previous</a></li>
-                        <li class="page-item"><a class="page-link" href="#">1</a></li>
-                        <li class="page-item active"><a class="page-link" href="#">2</a></li>
-                        <li class="page-item"><a class="page-link" href="#">3</a></li>
-                        <li class="page-item"><a class="page-link" href="#">Next</a></li>
+                        <li id="prevPage" class="page-item disabled"><a class="page-link" href="#">Previous</a></li>
+                        <li class="page-item active"><a class="page-link" href="#">1</a></li>
+                        <li id="nexPage" class="page-item"><a class="page-link" href="#">Next</a></li>
                     </ul>
                 </nav>
             </div>
+        </div>
+        <%--Code snippet for account information appending--%>
+        <div hidden>
+            <li id="accountSummary" class="d-flex justify-content-between lh-condensed">
+                <div>
+                    <h6 class="my-0"></h6>
+                    <small class="text-muted"></small>
+                </div>
+                <span class="text-muted"></span>
+            </li>
+        </div>
+        <%--Code snippet for operation table--%>
+        <div hidden>
+            <table id="operationTableSnippet" class="table table-hover">
+                <thead align="right">
+                <tr>
+                    <th scope="col">Date</th>
+                    <th scope="col">From account</th>
+                    <th scope="col">To account</th>
+                    <th scope="col">Category</th>
+                    <th scope="col">Sum</th>
+                </tr>
+                </thead>
+                <tbody>
+                </tbody>
+            </table>
         </div>
 <%@include file="footer.jsp" %>

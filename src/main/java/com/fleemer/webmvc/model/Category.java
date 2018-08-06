@@ -1,5 +1,6 @@
 package com.fleemer.webmvc.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fleemer.webmvc.model.enums.CategoryType;
 import java.io.Serializable;
 import javax.persistence.*;
@@ -33,6 +34,7 @@ public class Category implements Serializable {
     @Column(nullable = false)
     private CategoryType type;
 
+    @JsonIgnore
     @ManyToOne(fetch = FetchType.LAZY)
     @OnDelete(action = OnDeleteAction.CASCADE)
     @JoinColumn

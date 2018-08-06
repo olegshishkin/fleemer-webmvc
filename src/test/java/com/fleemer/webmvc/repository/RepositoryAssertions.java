@@ -34,8 +34,6 @@ class RepositoryAssertions {
         Assert.assertEquals(expected.getLastName(), actual.getLastName());
         Assert.assertEquals(expected.getEmail(), actual.getEmail());
         Assert.assertEquals(expected.getHash(), actual.getHash());
-        assertIterableEquals(expected.getAccounts(), actual.getAccounts());
-        assertIterableEquals(expected.getCategories(), actual.getCategories());
     }
 
     static void assertEquals(Category expected, Category actual) {

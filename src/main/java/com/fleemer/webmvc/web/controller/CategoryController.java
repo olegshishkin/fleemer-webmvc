@@ -9,7 +9,6 @@ import com.fleemer.webmvc.service.exception.ServiceException;
 import java.security.Principal;
 import java.util.Optional;
 import javax.validation.Valid;
-import org.hibernate.Hibernate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
@@ -33,11 +32,10 @@ public class CategoryController {
         this.personService = personService;
     }
 
-    @Transactional(readOnly = true)
     @GetMapping
     public String categories(Model model, Principal principal) {
         Person person = personService.findByEmail(principal.getName()).orElseThrow();
-        fillModel(model, person.getCategories());
+        fillModel(model, categoryService.findAll(person));
         model.addAttribute("category", new Category());
         return ROOT_VIEW;
     }
@@ -48,14 +46,14 @@ public class CategoryController {
                                 Principal principal) throws ServiceException {
         Person person = personService.findByEmail(principal.getName()).orElseThrow();
         if (bindingResult.hasErrors()) {
-            fillModel(model, person.getCategories());
+            fillModel(model, categoryService.findAll(person));
             return ROOT_VIEW;
         }
         Optional<Category> lookedCategory = categoryService.findByNameAndPerson(category.getName(), person);
         if (lookedCategory.isPresent()) {
             String message = "Category with such name already exists! Try again, please.";
             bindingResult.rejectValue("name", "name.alreadyExists", message);
-            fillModel(model, person.getCategories());
+            fillModel(model, categoryService.findAll(person));
             return ROOT_VIEW;
         }
         category.setPerson(person);
@@ -64,7 +62,6 @@ public class CategoryController {
     }
 
     private void fillModel(Model model, Iterable<Category> collection) {
-        Hibernate.initialize(collection);
         model.addAttribute("categories", collection);
         model.addAttribute("categoryTypes", CategoryType.values());
     }

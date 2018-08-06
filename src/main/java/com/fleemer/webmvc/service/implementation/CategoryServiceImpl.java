@@ -4,6 +4,7 @@ import com.fleemer.webmvc.model.Category;
 import com.fleemer.webmvc.model.Person;
 import com.fleemer.webmvc.repository.CategoryRepository;
 import com.fleemer.webmvc.service.CategoryService;
+import java.util.List;
 import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -20,12 +21,17 @@ public class CategoryServiceImpl extends AbstractService<Category, Long, Categor
     }
 
     @Override
-    protected CategoryRepository getRepository() {
+    protected CategoryRepository getOperationRepository() {
         return repository;
     }
 
     @Override
     public Optional<Category> findByNameAndPerson(String name, Person person) {
         return repository.findByNameAndPerson(name, person);
+    }
+
+    @Override
+    public List<Category> findAll(Person person) {
+        return repository.findAllByPersonOrderByName(person);
     }
 }

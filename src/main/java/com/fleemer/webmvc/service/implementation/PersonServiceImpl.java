@@ -19,7 +19,7 @@ public class PersonServiceImpl extends AbstractService<Person, Long, PersonRepos
     }
 
     @Override
-    protected PersonRepository getRepository() {
+    protected PersonRepository getOperationRepository() {
         return repository;
     }
 

@@ -1,7 +1,7 @@
 package com.fleemer.webmvc.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import java.io.Serializable;
-import java.util.Set;
 import javax.persistence.*;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotNull;
@@ -37,16 +37,9 @@ public class Person implements Serializable {
     @Column(unique = true, nullable = false)
     private String email;
 
+    @JsonIgnore
     @NotNull
     @Size(min = 1, max = 255)
     @Column(nullable = false)
     private String hash;
-
-    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
-    @JoinColumn(name = "person_id")
-    private Set<Account> accounts;
-
-    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
-    @JoinColumn(name = "person_id")
-    private Set<Category> categories;
 }

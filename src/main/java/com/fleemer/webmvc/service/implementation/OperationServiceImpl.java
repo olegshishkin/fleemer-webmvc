@@ -6,31 +6,50 @@ import com.fleemer.webmvc.model.Operation;
 import com.fleemer.webmvc.model.Person;
 import com.fleemer.webmvc.model.enums.CategoryType;
 import com.fleemer.webmvc.repository.OperationRepository;
+import com.fleemer.webmvc.service.AccountService;
+import com.fleemer.webmvc.service.CategoryService;
 import com.fleemer.webmvc.service.OperationService;
 import com.fleemer.webmvc.service.exception.ServiceException;
 import java.math.BigDecimal;
+import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @Transactional
-public class OperationServiceImpl extends AbstractService<Operation, Long, OperationRepository> implements OperationService {
-    private final OperationRepository repository;
+public class OperationServiceImpl extends AbstractService<Operation, Long, OperationRepository>
+        implements OperationService {
+    private final OperationRepository operationRepository;
+    private final AccountService accountService;
+    private final CategoryService categoryService;
 
     @Autowired
-    public OperationServiceImpl(OperationRepository repository) {
-        this.repository = repository;
+    public OperationServiceImpl(OperationRepository repository, AccountService accountService,
+                                CategoryService categoryService) {
+        this.operationRepository = repository;
+        this.accountService = accountService;
+        this.categoryService = categoryService;
     }
 
     @Override
-    protected OperationRepository getRepository() {
-        return repository;
+    protected OperationRepository getOperationRepository() {
+        return operationRepository;
     }
 
     @Override
-    public Iterable<Operation> findAll(Person person) {
-        return repository.findAllByInAccountPersonOrOutAccountPersonOrCategoryPerson(person, person, person);
+    public List<Operation> findAll(Person person) {
+        return operationRepository.findAllByInAccountPersonOrOutAccountPersonOrCategoryPerson(person, person, person);
+    }
+
+    @Override
+    public List<Operation> findAll(Person person, int page, int size) {
+        Pageable pageable = PageRequest.of(page, size, Sort.Direction.DESC, "date");
+        return operationRepository.findAllByInAccountPersonOrOutAccountPersonOrCategoryPerson(person, person, person,
+                pageable);
     }
 
     @Override
@@ -43,6 +62,8 @@ public class OperationServiceImpl extends AbstractService<Operation, Long, Opera
         if (category == null) {
             in.setBalance(in.getBalance().add(sum));
             out.setBalance(out.getBalance().subtract(sum));
+            accountService.save(in);
+            accountService.save(out);
             return super.save(entity);
         }
         if (category.getType() == CategoryType.INCOME) {
@@ -51,6 +72,13 @@ public class OperationServiceImpl extends AbstractService<Operation, Long, Opera
         if (category.getType() == CategoryType.OUTCOME) {
             out.setBalance(out.getBalance().subtract(sum));
         }
+        if (in != null) {
+            accountService.save(in);
+        }
+        if (out != null) {
+            accountService.save(out);
+        }
+        categoryService.save(category);
         return super.save(entity);
     }
 

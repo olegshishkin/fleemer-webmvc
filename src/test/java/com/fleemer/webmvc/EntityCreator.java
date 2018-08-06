@@ -9,7 +9,6 @@ import com.fleemer.webmvc.model.enums.CategoryType;
 import com.fleemer.webmvc.model.enums.Currency;
 import java.math.BigDecimal;
 import java.time.LocalDate;
-import java.util.Set;
 
 public class EntityCreator {
     public static Account createAccount(Long id, AccountType type, Currency currency, String name, BigDecimal sum,
@@ -46,16 +45,13 @@ public class EntityCreator {
         return o;
     }
 
-    public static Person createPerson(Long id, String firstName, String lastName, String email, String hash,
-                                      Set<Account> accounts, Set<Category> categories) {
+    public static Person createPerson(Long id, String firstName, String lastName, String email, String hash) {
         Person p = new Person();
         p.setId(id);
         p.setFirstName(firstName);
         p.setLastName(lastName);
         p.setEmail(email);
         p.setHash(hash);
-        p.setAccounts(accounts);
-        p.setCategories(categories);
         return p;
     }
 }
