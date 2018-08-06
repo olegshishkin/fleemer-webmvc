@@ -56,7 +56,7 @@ public class Account implements Serializable {
     private Person person;
 
     @JsonGetter("type")
-    public String toJson() {
+    public String getRefactoredType() {
         String text = type.name().toLowerCase().replace('_', ' ');
         return text.substring(0, 1).toUpperCase() + text.substring(1);
     }

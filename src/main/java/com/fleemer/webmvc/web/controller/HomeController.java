@@ -10,7 +10,12 @@ import com.fleemer.webmvc.web.form.OperationForm;
 import java.security.Principal;
 import java.util.List;
 import javax.validation.Valid;
+import lombok.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -64,9 +69,12 @@ public class HomeController {
 
     @ResponseBody
     @GetMapping(value = "/operation", params = {"page", "size"})
-    public List<Operation> getOperations(@RequestParam("page") int page, @RequestParam("size") int size,
+    public OperationPageDto getOperationsPage(@RequestParam("page") int page, @RequestParam("size") int size,
                                          Principal principal) {
-        return operationService.findAll(getCurrentPerson(principal), page, size);
+        Person person = getCurrentPerson(principal);
+        Pageable pageable = PageRequest.of(page, size, new Sort(Sort.Direction.DESC, "date"));
+        Page<Operation> operationPage = operationService.findAll(person, pageable);
+        return new OperationPageDto(operationPage.getNumber(), operationPage.getTotalPages(), operationPage.getContent());
     }
 
     @ResponseBody
@@ -95,5 +103,15 @@ public class HomeController {
         operation.setOutAccount(outAccount);
         operation.setCategory(category);
         return operation;
+    }
+
+    @Getter
+    @Setter
+    @NoArgsConstructor
+    @AllArgsConstructor
+    private class OperationPageDto {
+        private int currentPage;
+        private int totalPages;
+        private List<Operation> operations;
     }
 }

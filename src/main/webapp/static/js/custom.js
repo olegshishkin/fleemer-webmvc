@@ -31,7 +31,7 @@ $(document).ready(function(){
     date_input.datepicker(options);
     setTotalBalance();
     fillAccountsList();
-    fillTable(0, 30);
+    getOperationsPage(0, 15);
 });
 
 // operation type radiobuttons
@@ -61,7 +61,7 @@ function setTotalBalance(){
     $.ajax({
         url: '/balance.json',
         success: function(result){
-            $("#totalBalance").html(result);
+            $("#totalBalance").html(result.toFixed(2));
         }
     });
 }
@@ -76,57 +76,98 @@ function fillAccountsList() {
                     var newSummary = $('#accountSummary').clone(true).addClass('list-group-item').removeAttr('id');
                     $(newSummary).find('h6').html(value.name);
                     $(newSummary).find('small').html(value.type);
-                    $(newSummary).find('span').html(value.balance);
+                    $(newSummary).find('span').html(value.balance.toFixed(2));
                     $('#accountSummaryPlace').append(newSummary);
             });
         }
     })
 }
 
-// Appends operation table
-function fillTable(page, size) {
+// Fills operation table and paginator
+function getOperationsPage(page, size) {
     $.ajax({
         url: '/operation.json',
         data: { page: page, size: size },
         success: function (result) {
-            $('#operationTable').empty();
-            var openTag = '<td align="right">';
-            var closeTag = '</td>';
-            var table = $('#operationTableSnippet').clone(true).removeAttr('id');
-            $.each(result,
-                function addOperationRow(key, value) {
-                    var sum = value.sum;
-                    var row = '<tr>' + openTag + value.date + closeTag + openTag;
-                    var outAccount = value.outAccount;
-                    if (isNotNull(outAccount)) {
-                        row = row + outAccount.name;
-                    }
-                    row = row + closeTag + openTag;
-                    var inAccount = value.inAccount;
-                    if (isNotNull(inAccount)) {
-                        row = row + inAccount.name;
-                    }
-                    row = row + closeTag + openTag;
-                    var category = value.category;
-                    if (isNotNull(category)) {
-                        row = row + category.name;
-                    }
-                    row = row + closeTag;
-                    if (isNotNull(outAccount) & isNotNull(category)) {
-                        row = row + '<td align="right" class="text-danger">-' + sum;
-                    } else if (isNotNull(inAccount) & isNotNull(category)) {
-                        row = row + '<td align="right" class="text-success">+' + sum;
-                    } else {
-                        row = row + openTag + sum;
-                    }
-                    row = row + closeTag + '</tr>';
-                    $(table).find('tbody').append(row);
-                });
-            $('#operationTable').append(table);
+            fillTable(result.operations);
+            fillPaginator(result.currentPage, result.totalPages, size);
         }
     });
 }
 
+// Fills operation table
+function fillTable(operations) {
+    $('#operationTable').empty();
+    var openTag = '<td align="right">';
+    var closeTag = '</td>';
+    var table = $('#operationTableSnippet').clone(true).removeAttr('id');
+    $.each(operations,
+        function addOperationRow(key, value) {
+            var sum = value.sum;
+            var row = '<tr>' + openTag + value.date + closeTag + openTag;
+            var outAccount = value.outAccount;
+            if (isNotNull(outAccount)) {
+                row = row + outAccount.name;
+            }
+            row = row + closeTag + openTag;
+            var inAccount = value.inAccount;
+            if (isNotNull(inAccount)) {
+                row = row + inAccount.name;
+            }
+            row = row + closeTag + openTag;
+            var category = value.category;
+            if (isNotNull(category)) {
+                row = row + category.name;
+            }
+            row = row + closeTag;
+            if (isNotNull(outAccount) & isNotNull(category)) {
+                row = row + '<td align="right" class="text-danger">- ' + sum.toFixed(2);
+            } else if (isNotNull(inAccount) & isNotNull(category)) {
+                row = row + '<td align="right" class="text-success">+ ' + sum.toFixed(2);
+            } else {
+                row = row + openTag + sum.toFixed(2);
+            }
+            row = row + closeTag + '</tr>';
+            $(table).find('tbody').append(row);
+        });
+    $('#operationTable').append(table);
+}
+
 function isNotNull(value) {
     return value != undefined & value != 'null';
+}
+
+// Fills paginated links
+function fillPaginator(cur, total, size) {
+    console.log(cur);
+    $('#pagination').empty();
+    var prevLi = $('#curPage').clone(true).removeAttr('id');
+    if (cur == 0){
+        prevLi.addClass('disabled');
+    } else {
+        prevLi.removeAttr('disabled');
+    }
+    prevLi.find('a').attr('onclick', 'getOperationsPage(' + (cur - 1) + ', ' + size + ')');
+    prevLi.find('a').html('<<');
+    $('#pagination').append(prevLi);
+
+    for (var i = 0; i < total; i++){
+        var curLi = $('#curPage').clone(true).removeAttr('id');
+        if (i == cur) {
+            curLi.addClass('active');
+        }
+        curLi.find('a').attr('onclick', 'getOperationsPage(' + i + ', ' + size + ')');
+        curLi.find('a').html(i + 1);
+        $('#pagination').append(curLi);
+    }
+
+    var nextLi = $('#curPage').clone(true).removeAttr('id');
+    if (cur == total - 1){
+        nextLi.addClass('disabled');
+    } else {
+        nextLi.removeAttr('disabled');
+    }
+    nextLi.find('a').attr('onclick', 'getOperationsPage(' + (cur + 1) + ', ' + size + ')');
+    nextLi.find('a').html('>>');
+    $('#pagination').append(nextLi);
 }

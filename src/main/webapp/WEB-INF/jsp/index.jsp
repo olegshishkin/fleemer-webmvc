@@ -10,7 +10,7 @@
             <div class="col-md-4">
                 <h4 class="d-flex justify-content-between align-items-center mb-3">
                     <span class="text-muted">Total balance</span>
-                    <span id="totalBalance" class="badge badge-secondary badge-pill">3</span>
+                    <span id="totalBalance" class="badge badge-warning badge-pill"></span>
                 </h4>
                 <ul id="accountSummaryPlace" class="list-group mb-3"></ul>
             </div>
@@ -104,11 +104,7 @@
         <div class="row">
             <div class="col-md-12 mb-3">
                 <nav>
-                    <ul class="pagination justify-content-center">
-                        <li id="prevPage" class="page-item disabled"><a class="page-link" href="#">Previous</a></li>
-                        <li class="page-item active"><a class="page-link" href="#">1</a></li>
-                        <li id="nexPage" class="page-item"><a class="page-link" href="#">Next</a></li>
-                    </ul>
+                    <ul id="pagination" class="pagination justify-content-center"></ul>
                 </nav>
             </div>
         </div>
@@ -137,5 +133,9 @@
                 <tbody>
                 </tbody>
             </table>
+        </div>
+        <%--Code snippet for pagination--%>
+        <div hidden>
+            <li id="curPage" class="page-item"><a href="#pagination" class="page-link"></a></li>
         </div>
 <%@include file="footer.jsp" %>

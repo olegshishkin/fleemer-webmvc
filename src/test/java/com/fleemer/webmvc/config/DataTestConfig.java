@@ -3,6 +3,7 @@ package com.fleemer.webmvc.config;
 import javax.sql.DataSource;
 import java.io.IOException;
 import java.util.Properties;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.env.Environment;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
@@ -16,7 +17,7 @@ public class DataTestConfig extends DataConfig {
         super(environment);
     }
 
-    @Override
+    @Bean
     public DataSource dataSource() {
         Properties p;
         try {

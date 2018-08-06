@@ -10,12 +10,11 @@
   <packaging>war</packaging>
 
   <name>fleemer-mvc</name>
-  <!-- FIXME change it to the project's website -->
-  <url>http://www.example.com</url>
+  <url>us-cdbr-iron-east-01.cleardb.net</url>
 
   <properties>
-      <maven.compiler.source>1.10</maven.compiler.source> <!--todo remove-->
-      <maven.compiler.target>1.10</maven.compiler.target> <!--todo remove-->
+      <maven.compiler.source>1.10</maven.compiler.source>
+      <maven.compiler.target>1.10</maven.compiler.target>
       <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 
       <!-- dependencies versions -->
@@ -211,18 +210,6 @@
 
     <build>
         <plugins>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-dependency-plugin</artifactId>
-                <version>3.1.1</version>
-                <executions>
-                    <execution>
-                        <id>copy-dependencies</id>
-                        <phase>package</phase>
-                        <goals><goal>copy-dependencies</goal></goals>
-                    </execution>
-                </executions>
-            </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-war-plugin</artifactId>
