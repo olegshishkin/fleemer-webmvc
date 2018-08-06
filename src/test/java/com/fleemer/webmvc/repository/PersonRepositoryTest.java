@@ -1,24 +1,14 @@
 package com.fleemer.webmvc.repository;
 
-import static com.fleemer.webmvc.EntityCreator.createAccount;
-import static com.fleemer.webmvc.EntityCreator.createCategory;
 import static com.fleemer.webmvc.EntityCreator.createPerson;
 
 import com.fleemer.webmvc.config.DataTestConfig;
-import com.fleemer.webmvc.model.Account;
-import com.fleemer.webmvc.model.Category;
 import com.fleemer.webmvc.model.Person;
-import com.fleemer.webmvc.model.enums.AccountType;
-import com.fleemer.webmvc.model.enums.CategoryType;
-import com.fleemer.webmvc.model.enums.Currency;
 import com.github.springtestdbunit.DbUnitTestExecutionListener;
 import com.github.springtestdbunit.annotation.ExpectedDatabase;
 import com.github.springtestdbunit.annotation.DatabaseSetup;
-import java.math.BigDecimal;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
-import java.util.Set;
 import javax.transaction.Transactional;
 import org.junit.Assert;
 import org.junit.Before;

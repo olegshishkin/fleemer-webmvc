@@ -104,13 +104,6 @@ public class OperationServiceImplTest {
     }
 
     @Test
-    public void save() throws ServiceException {
-        when(repository.save(operation)).thenReturn(operation);
-        assertEquals(operation, service.save(operation));
-        verify(repository, times(1)).save(operation);
-    }
-
-    @Test
     public void saveAll() {
         List<Operation> operations = Collections.emptyList();
         when(repository.saveAll(operations)).thenReturn(operations);

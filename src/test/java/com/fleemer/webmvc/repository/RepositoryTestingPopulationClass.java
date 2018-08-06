@@ -11,9 +11,7 @@ import com.fleemer.webmvc.model.enums.CategoryType;
 import com.fleemer.webmvc.model.enums.Currency;
 import java.math.BigDecimal;
 import java.time.*;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 class RepositoryTestingPopulationClass {
     private List<Account> accounts;
@@ -26,7 +24,6 @@ class RepositoryTestingPopulationClass {
         people = getTestPeople();
         categories = getTestCategories();
         operations = getTestOperations();
-        peopleCollectionInitialisation();
     }
 
     public List<Account> getAccounts() {
@@ -90,28 +87,5 @@ class RepositoryTestingPopulationClass {
         Category c6 = createCategory(6L, "Home", CategoryType.OUTCOME, people.get(1));
         Category c7 = createCategory(7L, "Salary", CategoryType.INCOME, people.get(3));
         return List.of(c1, c2, c3, c4, c5, c6, c7);
-    }
-//todo
-    private void peopleCollectionInitialisation() {
-//        Person person1 = people.get(0);
-//        Set<Account> accountSet1 = new HashSet<>(List.of(accounts.get(2)));
-//        person1.setAccounts(accountSet1);
-//        Set<Category> categorySet1 = new HashSet<>(List.of(categories.get(0), categories.get(2), categories.get(4)));
-//        person1.setCategories(categorySet1);
-//
-//        Person person2 = people.get(1);
-//        Set<Account> accountSet2 = new HashSet<>(List.of(accounts.get(0)));
-//        person2.setAccounts(accountSet2);
-//        Set<Category> categorySet2 = new HashSet<>(List.of(categories.get(3), categories.get(5)));
-//        person2.setCategories(categorySet2);
-//
-//        Set<Category> categorySet3 = new HashSet<>(List.of(categories.get(1)));
-//        people.get(2).setCategories(categorySet3);
-//
-//        Person person4 = people.get(3);
-//        Set<Account> accountSet4 = new HashSet<>(List.of(accounts.get(1)));
-//        person4.setAccounts(accountSet4);
-//        Set<Category> categorySet4 = new HashSet<>(List.of(categories.get(6)));
-//        person4.setCategories(categorySet4);
     }
 }

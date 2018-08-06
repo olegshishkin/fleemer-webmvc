@@ -6,7 +6,7 @@
 
   <groupId>com.fleemer.webmvc</groupId>
   <artifactId>fleemer-mvc</artifactId>
-  <version>1.0-SNAPSHOT</version>
+  <version>0.1</version>
   <packaging>war</packaging>
 
   <name>fleemer-mvc</name>
@@ -202,46 +202,47 @@
   </dependencies>
 
     <build>
-        <finalName>Fleemer</finalName>
         <plugins>
-            <!--maven-compiler-plugin-->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-compiler-plugin</artifactId>
-                <version>3.7.0</version>
+                <artifactId>maven-dependency-plugin</artifactId>
+                <version>3.1.1</version>
+                <executions>
+                    <execution>
+                        <id>copy-dependencies</id>
+                        <phase>package</phase>
+                        <goals><goal>copy-dependencies</goal></goals>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-war-plugin</artifactId>
+                <version>2.6</version>
                 <configuration>
-                    <!--<source>${jdk.version}</source>-->
-                    <!--<target>${jdk.version}</target>-->
-                    <!--<encoding>${project.build.sourceEncoding}</encoding>-->
+                    <failOnMissingWebXml>false</failOnMissingWebXml>
                 </configuration>
             </plugin>
-            <!--maven-resources-plugin-->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-resources-plugin</artifactId>
-                <version>3.0.2</version>
-                <configuration>
-                    <encoding>${project.build.sourceEncoding}</encoding>
-                </configuration>
-            </plugin>
-            <!--maven-surefire-plugin-->
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-surefire-plugin</artifactId>
-                <version>2.21.0</version>
-                <dependencies>
-                    <!-- https://mvnrepository.com/artifact/org.junit.platform/junit-platform-surefire-provider -->
-                    <!--<dependency>-->
-                        <!--<groupId>org.junit.platform</groupId>-->
-                        <!--<artifactId>junit-platform-surefire-provider</artifactId>-->
-                        <!--<version>${dependency.junit.platform.version}</version>-->
-                    <!--</dependency>-->
-                    <!--<dependency>-->
-                        <!--<groupId>org.junit.jupiter</groupId>-->
-                        <!--<artifactId>junit-jupiter-engine</artifactId>-->
-                        <!--<version>${dependency.junit.version}</version>-->
-                    <!--</dependency>-->
-                </dependencies>
+                <artifactId>maven-dependency-plugin</artifactId>
+                <version>2.3</version>
+                <executions>
+                    <execution>
+                        <phase>package</phase>
+                        <goals><goal>copy</goal></goals>
+                        <configuration>
+                            <artifactItems>
+                                <artifactItem>
+                                    <groupId>com.github.jsimone</groupId>
+                                    <artifactId>webapp-runner</artifactId>
+                                    <version>8.5.31.0</version>
+                                    <destFileName>webapp-runner.jar</destFileName>
+                                </artifactItem>
+                            </artifactItems>
+                        </configuration>
+                    </execution>
+                </executions>
             </plugin>
         </plugins>
     </build>
