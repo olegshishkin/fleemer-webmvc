@@ -90,7 +90,6 @@ public class HomeController {
 
     private void fillModel(Model model, Person person) {
         model.addAttribute("accounts", accountService.findAll(person));
-        model.addAttribute("categories", categoryService.findAll(person));
         model.addAttribute("operations", operationService.findAll(person));
     }
 

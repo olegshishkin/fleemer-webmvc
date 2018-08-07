@@ -7,17 +7,14 @@ import com.fleemer.webmvc.service.CategoryService;
 import com.fleemer.webmvc.service.PersonService;
 import com.fleemer.webmvc.service.exception.ServiceException;
 import java.security.Principal;
+import java.util.List;
 import java.util.Optional;
 import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
 @Controller
 @RequestMapping("/category")
@@ -34,17 +31,22 @@ public class CategoryController {
 
     @GetMapping
     public String categories(Model model, Principal principal) {
-        Person person = personService.findByEmail(principal.getName()).orElseThrow();
+        Person person = getCurrentPerson(principal);
         fillModel(model, categoryService.findAll(person));
         model.addAttribute("category", new Category());
         return ROOT_VIEW;
     }
 
-    @Transactional
+    @ResponseBody
+    @GetMapping(value = "/getAll", params = {"type"})
+    public List<Category> getAll(@RequestParam("type") CategoryType type, Principal principal) {
+        return categoryService.findAllByTypeAndPerson(type, getCurrentPerson(principal));
+    }
+
     @PostMapping("/new")
     public String newCategory(@Valid @ModelAttribute Category category, BindingResult bindingResult, Model model,
                                 Principal principal) throws ServiceException {
-        Person person = personService.findByEmail(principal.getName()).orElseThrow();
+        Person person = getCurrentPerson(principal);
         if (bindingResult.hasErrors()) {
             fillModel(model, categoryService.findAll(person));
             return ROOT_VIEW;
@@ -59,6 +61,10 @@ public class CategoryController {
         category.setPerson(person);
         categoryService.save(category);
         return "redirect:/category";
+    }
+
+    private Person getCurrentPerson(Principal principal) {
+        return personService.findByEmail(principal.getName()).orElseThrow();
     }
 
     private void fillModel(Model model, Iterable<Category> collection) {

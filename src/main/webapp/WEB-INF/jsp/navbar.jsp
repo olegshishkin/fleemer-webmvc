@@ -33,11 +33,7 @@
         </ul>
         <ul class="navbar-nav ml-auto">
             <li class="nav-item">
-                <a class="nav-link" href="<c:url value="/logout"/>">
-                    <security:authorize access="isAuthenticated()">
-                        Logout (<security:authentication property="principal.username"/>)
-                    </security:authorize>
-                </a>
+                <a id="firstName" class="nav-link" href="<c:url value="/logout"/>"></a>
             </li>
         </ul>
     </div>

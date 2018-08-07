@@ -22,11 +22,11 @@
 
                 <div class="d-block my-3 text-center">
                     <div class="custom-control custom-radio custom-control-inline">
-                        <input id="outcome" name="operationType" type="radio" class="custom-control-input" checked required>
+                        <input id="outcome" name="operationType" type="radio" class="custom-control-input" required>
                         <label class="custom-control-label" for="outcome">Outcome</label>
                     </div>
                     <div class="custom-control custom-radio custom-control-inline">
-                        <input id="income" name="operationType" type="radio" class="custom-control-input" required>
+                        <input id="income" name="operationType" type="radio" class="custom-control-input" checked required>
                         <label class="custom-control-label" for="income">Income</label>
                     </div>
                     <div class="custom-control custom-radio custom-control-inline">
@@ -43,6 +43,7 @@
                                 <form:options items="${accounts}" itemValue="name" itemLabel="name"/>
                             </form:select>
                             <form:errors path="outAccountName" cssClass="text-danger"/>
+                            <div class="invalid-feedback">Select a value</div>
                         </div>
                         <div class="col-md-6 mb-3">
                             <form:select path="inAccountName" cssClass="custom-select d-block w-100" disabled="true">
@@ -50,16 +51,14 @@
                                 <form:options items="${accounts}" itemValue="name" itemLabel="name"/>
                             </form:select>
                             <form:errors path="inAccountName" cssClass="text-danger"/>
+                            <div class="invalid-feedback">Select a value</div>
                         </div>
                     </div>
 
                     <div class="row">
                         <div class="col-md-12 mb-3">
-                            <form:select path="categoryName" cssClass="custom-select d-block w-100">
-                                <form:option value="" label="Select category"/>
-                                <form:options items="${categories}" itemValue="name" itemLabel="name"/>
-                            </form:select>
-                            <form:errors path="categoryName" cssClass="text-danger"/>
+                            <select id="categoryName" name="categoryName" class="custom-select d-block w-100" title=""></select>
+                            <div class="invalid-feedback">Select a value</div>
                         </div>
                     </div>
 

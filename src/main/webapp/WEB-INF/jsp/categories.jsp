@@ -23,7 +23,7 @@
                         <div class="col-md-12 mb-3">
                             <form:label path="type">Type</form:label>
                             <form:select path="type" cssClass="custom-select d-block w-100" required="true">
-                                <form:option value="0" label="Select..."/>
+                                <form:option value="" label="Select..."/>
                                 <form:options items="${categoryTypes}"/>
                             </form:select>
                             <form:errors path="type" cssClass="text-danger"/>

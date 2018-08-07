@@ -34,7 +34,7 @@ public class AccountController {
 
     @GetMapping
     public String accounts(Model model, Principal principal) {
-        Person person = personService.findByEmail(principal.getName()).orElseThrow();
+        Person person = getCurrentPerson(principal);
         fillModel(model, accountService.findAll(person));
         model.addAttribute("account", new Account());
         return ROOT_VIEW;
@@ -43,7 +43,7 @@ public class AccountController {
     @PostMapping("/new")
     public String newAccount(@Valid @ModelAttribute Account account, BindingResult bindingResult, Model model,
                              Principal principal) throws ServiceException {
-        Person person = personService.findByEmail(principal.getName()).orElseThrow();
+        Person person = getCurrentPerson(principal);
         if (bindingResult.hasErrors()) {
             fillModel(model, accountService.findAll(person));
             return ROOT_VIEW;
@@ -58,6 +58,10 @@ public class AccountController {
         account.setPerson(person);
         accountService.save(account);
         return "redirect:/account";
+    }
+
+    private Person getCurrentPerson(Principal principal) {
+        return personService.findByEmail(principal.getName()).orElseThrow();
     }
 
     private void fillModel(Model model, Iterable<Account> collection) {

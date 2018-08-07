@@ -4,14 +4,12 @@ import com.fleemer.webmvc.model.Person;
 import com.fleemer.webmvc.service.PersonService;
 import com.fleemer.webmvc.service.exception.ServiceException;
 import javax.validation.Valid;
+import java.security.Principal;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 @Controller
@@ -30,6 +28,12 @@ public class UserController {
     @GetMapping
     public ModelAndView showCreateUserForm() {
         return new ModelAndView(USER_FORM_VIEW, "person", new Person());
+    }
+
+    @ResponseBody
+    @GetMapping("name")
+    public String userName(Principal principal) {
+        return personService.findByEmail(principal.getName()).orElseThrow().getFirstName();
     }
 
     @PostMapping("/new")
