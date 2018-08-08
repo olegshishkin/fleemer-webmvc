@@ -86,4 +86,9 @@
             </div>
         </div>
     </div>
+    <script>
+        $(document).ready(function(){
+            setValidationListener();
+        });
+    </script>
 <%@include file="footer.jsp" %>

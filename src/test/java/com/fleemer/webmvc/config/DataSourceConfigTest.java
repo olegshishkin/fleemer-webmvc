@@ -5,17 +5,16 @@ import java.io.IOException;
 import java.util.Properties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.core.env.Environment;
+import org.springframework.context.annotation.Profile;
+import org.springframework.context.annotation.PropertySource;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
 
 @Configuration
-public class DataTestConfig extends DataConfig {
+@Profile("test")
+@PropertySource({"classpath:db.properties"})
+public class DataSourceConfigTest {
     private static final String DATABASE_PROPERTIES_FILE = "db.properties";
     private static final String URL_KEY = "url";
-
-    public DataTestConfig(Environment environment) {
-        super(environment);
-    }
 
     @Bean
     public DataSource dataSource() {
@@ -31,7 +30,7 @@ public class DataTestConfig extends DataConfig {
 
     private Properties getProperties() throws IOException {
         Properties p = new Properties();
-        p.load(ClassLoader.getSystemClassLoader().getResourceAsStream(DataTestConfig.DATABASE_PROPERTIES_FILE));
+        p.load(ClassLoader.getSystemClassLoader().getResourceAsStream(DATABASE_PROPERTIES_FILE));
         return p;
     }
 }

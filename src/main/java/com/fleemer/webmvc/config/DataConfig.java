@@ -3,12 +3,10 @@ package com.fleemer.webmvc.config;
 import java.util.Properties;
 import javax.persistence.EntityManagerFactory;
 import javax.sql.DataSource;
-import org.apache.commons.dbcp.BasicDataSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.*;
 import org.springframework.core.env.Environment;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
-import org.springframework.jdbc.datasource.lookup.JndiDataSourceLookup;
 import org.springframework.orm.jpa.JpaTransactionManager;
 import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
 import org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter;
@@ -17,10 +15,8 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 @Configuration
 @EnableTransactionManagement
 @EnableJpaRepositories("com.fleemer.webmvc.repository")
-@PropertySource({"classpath:jdbc.properties", "classpath:hibernate.properties", "classpath:jndi.properties"})
+@PropertySource({"classpath:hibernate.properties"})
 public class DataConfig {
-    private static final String DATA_SOURCE_JNDI_NAME = "jndi.url";
-    private static final String DRIVER_KEY = "JDBC_DRIVER";
     private static final String HIBERNATE_DIALECT_KEY = "hibernate.dialect";
     private static final String HIBERNATE_HBM_2_DDL_AUTO_KEY = "hibernate.hbm2ddl.auto";
     private static final String HIBERNATE_EJB_NAMING_STRATEGY_KEY = "hibernate.ejb.naming_strategy";
@@ -28,9 +24,6 @@ public class DataConfig {
     private static final String HIBERNATE_FORMAT_SQL_KEY = "hibernate.format_sql";
     private static final String HIBERNATE_HBM_2_DDL_IMPORT_FILES_KEY = "hibernate.hbm2ddl.import_files";
     private static final String PACKAGES_TO_SCAN = "com.fleemer.webmvc.model";
-    private static final String PASSWORD_KEY = "JDBC_DATABASE_PASSWORD";
-    private static final String URL_KEY = "JDBC_DATABASE_URL";
-    private static final String USERNAME_KEY = "JDBC_DATABASE_USERNAME";
 
     private final Environment environment;
 
@@ -50,23 +43,6 @@ public class DataConfig {
         emf.setJpaProperties(getJpaProperties());
         return emf;
     }
-
-    @Bean(destroyMethod = "")
-    public DataSource dataSource() {
-        BasicDataSource s = new BasicDataSource();
-        s.setUrl(environment.getProperty(URL_KEY));
-        s.setUsername(environment.getProperty(USERNAME_KEY));
-        s.setPassword(environment.getProperty(PASSWORD_KEY));
-        s.setDriverClassName(environment.getProperty(DRIVER_KEY));
-        return s;
-    }
-
-//    @Bean
-//    public DataSource dataSource() {
-//        JndiDataSourceLookup lookup = new JndiDataSourceLookup();
-//        lookup.setResourceRef(true);
-//        return lookup.getDataSource(environment.getProperty(DATA_SOURCE_JNDI_NAME));
-//    }
 
     private Properties getJpaProperties() {
         Properties p = new Properties();

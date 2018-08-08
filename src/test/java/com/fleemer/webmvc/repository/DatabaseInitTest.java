@@ -1,6 +1,7 @@
 package com.fleemer.webmvc.repository;
 
-import com.fleemer.webmvc.config.DataTestConfig;
+import com.fleemer.webmvc.config.DataConfig;
+import com.fleemer.webmvc.config.DataSourceConfigTest;
 import com.github.springtestdbunit.DbUnitTestExecutionListener;
 import com.github.springtestdbunit.annotation.DatabaseSetup;
 import com.github.springtestdbunit.annotation.ExpectedDatabase;
@@ -8,6 +9,7 @@ import javax.transaction.Transactional;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.test.annotation.DirtiesContext;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.TestExecutionListeners;
 import org.springframework.test.context.junit4.SpringRunner;
@@ -15,10 +17,11 @@ import org.springframework.test.context.support.DependencyInjectionTestExecution
 import org.springframework.test.context.support.DirtiesContextTestExecutionListener;
 import org.springframework.test.context.transaction.TransactionalTestExecutionListener;
 
+@ActiveProfiles("test")
 @Transactional
 @DatabaseSetup({DatabaseInitTest.INIT_DB_PATH})
 @DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_EACH_TEST_METHOD)
-@ContextConfiguration(classes = {DataTestConfig.class})
+@ContextConfiguration(classes = {DataConfig.class, DataSourceConfigTest.class})
 @TestExecutionListeners({DependencyInjectionTestExecutionListener.class, DirtiesContextTestExecutionListener.class,
         TransactionalTestExecutionListener.class, DbUnitTestExecutionListener.class})
 @RunWith(SpringRunner.class)

@@ -137,4 +137,15 @@
         <div hidden>
             <li id="curPage" class="page-item"><a href="#pagination" class="page-link"></a></li>
         </div>
+        <script>
+            $(document).ready(function(){
+                setValidationListener();
+                setDataPicker();
+                setOperationTypeListener();
+                $('#outcome').click();
+                setTotalBalance();
+                fillAccountsList();
+                getOperationsPage(0, 15);
+            });
+        </script>
 <%@include file="footer.jsp" %>

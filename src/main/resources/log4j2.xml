@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Configuration>
+    <Appenders>
+        <Console name="Console">
+            <PatternLayout pattern="%highlight{%d{DEFAULT} [%t] %-5p %c{1.}:%L - %m{ansi}%n}"/>
+        </Console>
+    </Appenders>
+    <Loggers>
+        <Logger name="com.fleemer" level="all" additivity="false">
+            <AppenderRef ref="Console"/>
+        </Logger>
+        <Root level="warn">
+            <AppenderRef ref="Console"/>
+        </Root>
+    </Loggers>
+</Configuration>

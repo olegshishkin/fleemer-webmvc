@@ -33,7 +33,7 @@
         </ul>
         <ul class="navbar-nav ml-auto">
             <li class="nav-item">
-                <a id="firstName" class="nav-link" href="<c:url value="/logout"/>"></a>
+                <a class="nav-link" href="<c:url value="/logout"/>">Logout(${sessionScope.userName})</a>
             </li>
         </ul>
     </div>

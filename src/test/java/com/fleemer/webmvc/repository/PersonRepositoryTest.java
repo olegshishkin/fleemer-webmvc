@@ -2,7 +2,8 @@ package com.fleemer.webmvc.repository;
 
 import static com.fleemer.webmvc.EntityCreator.createPerson;
 
-import com.fleemer.webmvc.config.DataTestConfig;
+import com.fleemer.webmvc.config.DataConfig;
+import com.fleemer.webmvc.config.DataSourceConfigTest;
 import com.fleemer.webmvc.model.Person;
 import com.github.springtestdbunit.DbUnitTestExecutionListener;
 import com.github.springtestdbunit.annotation.ExpectedDatabase;
@@ -17,6 +18,7 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.test.annotation.DirtiesContext;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.TestExecutionListeners;
 import org.springframework.test.context.junit4.SpringRunner;
@@ -24,10 +26,11 @@ import org.springframework.test.context.support.DependencyInjectionTestExecution
 import org.springframework.test.context.support.DirtiesContextTestExecutionListener;
 import org.springframework.test.context.transaction.TransactionalTestExecutionListener;
 
+@ActiveProfiles("test")
 @Transactional
 @DatabaseSetup({PersonRepositoryTest.INIT_DB_PATH})
 @DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_EACH_TEST_METHOD)
-@ContextConfiguration(classes = {DataTestConfig.class})
+@ContextConfiguration(classes = {DataConfig.class, DataSourceConfigTest.class})
 @TestExecutionListeners({DependencyInjectionTestExecutionListener.class, DirtiesContextTestExecutionListener.class,
         TransactionalTestExecutionListener.class, DbUnitTestExecutionListener.class})
 @RunWith(SpringRunner.class)

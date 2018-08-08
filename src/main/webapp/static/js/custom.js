@@ -1,29 +1,3 @@
-// Main script
-$(document).ready(function(){
-    setLogoutLink();
-    setDataPicker();
-    setValidationListener();
-    setOperationTypeListener();
-    $('#outcome').click();
-    setTotalBalance();
-    fillAccountsList();
-    getOperationsPage(0, 15);
-});
-
-// Set bootstrap datapicker
-function setDataPicker() {
-    var date_input=$('input[name="operation.date"]'); //our date input has the name "date"
-    var container=$('.bootstrap-iso form').length>0 ? $('.bootstrap-iso form').parent() : "body";
-    var options={
-        format: 'yyyy-mm-dd',
-        container: container,
-        todayHighlight: true,
-        setDate: new Date(),
-        autoclose: true
-    };
-    date_input.datepicker(options);
-}
-
 // Starter JavaScript for disabling form submissions if there are invalid fields
 function setValidationListener() {
     'use strict';
@@ -41,6 +15,20 @@ function setValidationListener() {
             }, false);
         });
     }, false);
+}
+
+// Set bootstrap datepicker
+function setDataPicker() {
+    var date_input=$('input[name="operation.date"]'); //our date input has the name "date"
+    var container=$('.bootstrap-iso form').length>0 ? $('.bootstrap-iso form').parent() : "body";
+    var options={
+        format: 'yyyy-mm-dd',
+        container: container,
+        todayHighlight: true,
+        setDate: new Date(),
+        autoclose: true
+    };
+    date_input.datepicker(options);
 }
 
 // operation type radiobuttons
@@ -107,7 +95,7 @@ function fillAccountsList() {
                     newSummary.find('small').html(value.type);
                     newSummary.find('span').html(value.balance.toFixed(2));
                     $('#accountSummaryPlace').append(newSummary);
-            });
+                });
         }
     })
 }
@@ -199,13 +187,4 @@ function fillPaginator(cur, total, size) {
     nextLi.find('a').attr('onclick', 'getOperationsPage(' + (cur + 1) + ', ' + size + ')');
     nextLi.find('a').html('>>');
     $('#pagination').append(nextLi);
-}
-
-function setLogoutLink() {
-    $.ajax({
-        url: '/user/name',
-        success: function (result) {
-            $('#firstName').text('Logout(' + result + ')');
-        }
-    });
 }

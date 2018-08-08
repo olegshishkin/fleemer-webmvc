@@ -9,6 +9,7 @@ import com.fleemer.webmvc.service.exception.ServiceException;
 import com.fleemer.webmvc.web.form.OperationForm;
 import java.security.Principal;
 import java.util.List;
+import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 import lombok.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -40,9 +41,10 @@ public class HomeController {
     }
 
     @GetMapping
-    public String home(Model model, Principal principal) {
+    public String home(Model model, Principal principal, HttpSession session) {
         model.addAttribute("operation", new OperationForm());
         Person person = getCurrentPerson(principal);
+        session.setAttribute("userName", person.getFirstName());
         fillModel(model, person);
         return ROOT_VIEW;
     }
