@@ -22,7 +22,7 @@ public class CategoryServiceImpl extends AbstractService<Category, Long, Categor
     }
 
     @Override
-    protected CategoryRepository getOperationRepository() {
+    protected CategoryRepository getRepository() {
         return repository;
     }
 

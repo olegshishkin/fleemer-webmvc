@@ -10,8 +10,8 @@ import java.io.Serializable;
 import java.util.Iterator;
 import org.junit.Assert;
 
-class RepositoryAssertions {
-    static void assertEquals(Account expected, Account actual) {
+public class RepositoryAssertions {
+    public static void assertEquals(Account expected, Account actual) {
         if (expected == null || actual == null) {
             Assert.assertTrue(expected == null & actual == null);
             return;
@@ -24,7 +24,7 @@ class RepositoryAssertions {
         Assert.assertThat(actual.getBalance(), comparesEqualTo(expected.getBalance()));
     }
 
-    static void assertEquals(Person expected, Person actual) {
+    public static void assertEquals(Person expected, Person actual) {
         if (expected == null || actual == null) {
             Assert.assertTrue(expected == null & actual == null);
             return;
@@ -36,7 +36,7 @@ class RepositoryAssertions {
         Assert.assertEquals(expected.getHash(), actual.getHash());
     }
 
-    static void assertEquals(Category expected, Category actual) {
+    public static void assertEquals(Category expected, Category actual) {
         if (expected == null || actual == null) {
             Assert.assertTrue(expected == null & actual == null);
             return;
@@ -47,7 +47,7 @@ class RepositoryAssertions {
         Assert.assertEquals(expected.getPerson(), actual.getPerson());
     }
 
-    static void assertEquals(Operation expected, Operation actual) {
+    public static void assertEquals(Operation expected, Operation actual) {
         if (expected == null || actual == null) {
             Assert.assertTrue(expected == null & actual == null);
             return;
@@ -61,7 +61,7 @@ class RepositoryAssertions {
         Assert.assertEquals(expected.getComment(), actual.getComment());
     }
 
-    static <T extends Serializable> void assertIterableEquals(Iterable<T> expected, Iterable<T> actual) {
+    public static <T extends Serializable> void assertIterableEquals(Iterable<T> expected, Iterable<T> actual) {
         if (expected == actual) {
             return;
         }

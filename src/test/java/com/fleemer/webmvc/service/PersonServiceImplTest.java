@@ -161,4 +161,12 @@ public class PersonServiceImplTest {
         service.deleteAllInBatch();
         verify(repository, times(1)).deleteAllInBatch();
     }
+
+    @Test
+    public void findByEmail() {
+        Optional<Person> expected = Optional.of(person);
+        when(repository.findByEmail("email")).thenReturn(expected);
+        assertEquals(expected, service.findByEmail("email"));
+        verify(repository, times(1)).findByEmail("email");
+    }
 }

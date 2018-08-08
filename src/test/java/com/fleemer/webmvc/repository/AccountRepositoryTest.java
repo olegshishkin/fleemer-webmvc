@@ -169,4 +169,21 @@ public class AccountRepositoryTest {
         repository.deleteAllInBatch();
         repository.flush();
     }
+
+    @Test
+    public void findAllByPersonOrderByName() {
+        List<Account> expected = List.of(accounts.get(2));
+        List<Account> actual = repository.findAllByPersonOrderByName(people.get(0));
+        RepositoryAssertions.assertIterableEquals(expected, actual);
+    }
+
+    @Test
+    public void findByNameAndPerson() {
+        RepositoryAssertions.assertEquals(accounts.get(1), repository.findByNameAndPerson("Bank", people.get(3)).orElseThrow());
+    }
+
+    @Test
+    public void getTotalBalance() {
+        Assert.assertEquals(new BigDecimal("1001.0200000000"), repository.getTotalBalance(people.get(0)));
+    }
 }

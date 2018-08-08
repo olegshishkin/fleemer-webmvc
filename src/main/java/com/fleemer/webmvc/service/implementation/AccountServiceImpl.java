@@ -22,7 +22,7 @@ public class AccountServiceImpl extends AbstractService<Account, Long, AccountRe
     }
 
     @Override
-    protected AccountRepository getOperationRepository() {
+    protected AccountRepository getRepository() {
         return repository;
     }
 

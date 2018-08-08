@@ -4,8 +4,12 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.*;
 
+import com.fleemer.webmvc.model.Account;
 import com.fleemer.webmvc.model.Category;
+import com.fleemer.webmvc.model.Person;
+import com.fleemer.webmvc.model.enums.CategoryType;
 import com.fleemer.webmvc.repository.CategoryRepository;
+import com.fleemer.webmvc.repository.RepositoryAssertions;
 import com.fleemer.webmvc.service.exception.ServiceException;
 import com.fleemer.webmvc.service.implementation.CategoryServiceImpl;
 import java.util.Collections;
@@ -35,6 +39,9 @@ public class CategoryServiceImplTest {
 
     @Mock
     private Pageable pageable;
+
+    @Mock
+    private Person person;
 
     @Mock
     private Page<Category> page;
@@ -160,5 +167,29 @@ public class CategoryServiceImplTest {
         doNothing().when(repository).deleteAllInBatch();
         service.deleteAllInBatch();
         verify(repository, times(1)).deleteAllInBatch();
+    }
+
+    @Test
+    public void findAll_byPerson() {
+        List<Category> expected = Collections.emptyList();
+        when(repository.findAllByPersonOrderByName(person)).thenReturn(expected);
+        assertEquals(expected, service.findAll(person));
+        verify(repository, times(1)).findAllByPersonOrderByName(person);
+    }
+
+    @Test
+    public void findByNameAndPerson() {
+        Optional<Category> expected = Optional.of(category);
+        when(repository.findByNameAndPerson("name", person)).thenReturn(expected);
+        assertEquals(expected, service.findByNameAndPerson("name", person));
+        verify(repository, times(1)).findByNameAndPerson("name", person);
+    }
+
+    @Test
+    public void findAllByTypeAndPerson() {
+        List<Category> expected = Collections.emptyList();
+        when(repository.findAllByTypeAndPerson(CategoryType.INCOME, person)).thenReturn(expected);
+        assertEquals(expected, service.findAllByTypeAndPerson(CategoryType.INCOME, person));
+        verify(repository, times(1)).findAllByTypeAndPerson(CategoryType.INCOME, person);
     }
 }

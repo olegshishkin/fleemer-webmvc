@@ -5,8 +5,8 @@ import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.*;
 
 import com.fleemer.webmvc.model.Operation;
+import com.fleemer.webmvc.model.Person;
 import com.fleemer.webmvc.repository.OperationRepository;
-import com.fleemer.webmvc.service.exception.ServiceException;
 import com.fleemer.webmvc.service.implementation.OperationServiceImpl;
 import java.util.Collections;
 import java.util.List;
@@ -31,10 +31,19 @@ public class OperationServiceImplTest {
     private OperationRepository repository;
 
     @Mock
+    private AccountService accountService;
+
+    @Mock
+    private CategoryService categoryService;
+
+    @Mock
     private Operation operation;
 
     @Mock
     private Pageable pageable;
+
+    @Mock
+    private Person person;
 
     @Mock
     private Page<Operation> page;
@@ -153,5 +162,20 @@ public class OperationServiceImplTest {
         doNothing().when(repository).deleteAllInBatch();
         service.deleteAllInBatch();
         verify(repository, times(1)).deleteAllInBatch();
+    }
+
+    @Test
+    public void findAll_person() {
+        List<Operation> expected = Collections.emptyList();
+        when(repository.findAllByInAccountPersonOrOutAccountPersonOrCategoryPerson(person, person, person)).thenReturn(expected);
+        assertEquals(expected, service.findAll(person));
+        verify(repository, times(1)).findAllByInAccountPersonOrOutAccountPersonOrCategoryPerson(person, person, person);
+    }
+
+    @Test
+    public void findAll_personAndPageable() {
+        when(repository.findAllByInAccountPersonOrOutAccountPersonOrCategoryPerson(person, person, person, pageable)).thenReturn(page);
+        assertEquals(page, service.findAll(person, pageable));
+        verify(repository, times(1)).findAllByInAccountPersonOrOutAccountPersonOrCategoryPerson(person, person, person, pageable);
     }
 }

@@ -7,6 +7,7 @@ import com.fleemer.webmvc.config.DataSourceConfigTest;
 import com.fleemer.webmvc.model.Account;
 import com.fleemer.webmvc.model.Category;
 import com.fleemer.webmvc.model.Operation;
+import com.fleemer.webmvc.model.Person;
 import com.github.springtestdbunit.DbUnitTestExecutionListener;
 import com.github.springtestdbunit.annotation.DatabaseSetup;
 import com.github.springtestdbunit.annotation.ExpectedDatabase;
@@ -18,6 +19,8 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ActiveProfiles;
@@ -44,6 +47,7 @@ public class OperationRepositoryTest {
     private List<Account> accounts;
     private List<Category> categories;
     private List<Operation> operations;
+    private List<Person> people;
 
     @Autowired
     private OperationRepository repository;
@@ -54,6 +58,7 @@ public class OperationRepositoryTest {
         accounts = populationClass.getAccounts();
         categories = populationClass.getCategories();
         operations = populationClass.getOperations();
+        people = populationClass.getPeople();
     }
 
     @Test
@@ -174,5 +179,28 @@ public class OperationRepositoryTest {
     public void deleteAllInBatch() {
         repository.deleteAllInBatch();
         repository.flush();
+    }
+
+    @Test
+    public void findAllByInAccountPersonOrOutAccountPersonOrCategoryPerson() {
+        Person person = people.get(1);
+        List<Operation> expected = List.of(operations.get(1),
+                operations.get(2),
+                operations.get(3),
+                operations.get(4),
+                operations.get(6),
+                operations.get(7),
+                operations.get(8));
+        List<Operation> actual = repository.findAllByInAccountPersonOrOutAccountPersonOrCategoryPerson(person, person, person);
+        RepositoryAssertions.assertIterableEquals(expected, actual);
+    }
+
+    @Test
+    public void findAllByInAccountPersonOrOutAccountPersonOrCategoryPerson_pageable() {
+        Person person = people.get(1);
+        List<Operation> expected = List.of(operations.get(3), operations.get(2));
+        Pageable pageable = PageRequest.of(2, 2, new Sort(Sort.Direction.DESC, "date"));
+        List<Operation> actual = repository.findAllByInAccountPersonOrOutAccountPersonOrCategoryPerson(person, person, person, pageable).getContent();
+        RepositoryAssertions.assertIterableEquals(expected, actual);
     }
 }

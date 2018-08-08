@@ -168,4 +168,9 @@ public class PersonRepositoryTest {
             throw e;
         }
     }
+
+    @Test
+    public void findByEmail() {
+        RepositoryAssertions.assertEquals(people.get(2), repository.findByEmail("mail3@mail.ma").orElseThrow());
+    }
 }

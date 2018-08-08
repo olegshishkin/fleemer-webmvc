@@ -35,7 +35,7 @@ public class OperationServiceImpl extends AbstractService<Operation, Long, Opera
     }
 
     @Override
-    protected OperationRepository getOperationRepository() {
+    protected OperationRepository getRepository() {
         return operationRepository;
     }
 
