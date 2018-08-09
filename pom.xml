@@ -122,13 +122,6 @@
           <version>${logback.version}</version>
       </dependency>
 
-      <!-- https://mvnrepository.com/artifact/org.elasticsearch.client/transport -->
-      <dependency>
-          <groupId>org.elasticsearch.client</groupId>
-          <artifactId>transport</artifactId>
-          <version>${elasticsearch.client.version}</version>
-      </dependency>
-
       <!-- https://mvnrepository.com/artifact/org.apache.logging.log4j/log4j-to-slf4j -->
       <dependency>
           <groupId>org.apache.logging.log4j</groupId>

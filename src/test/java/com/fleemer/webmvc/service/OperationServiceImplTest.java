@@ -4,10 +4,16 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.*;
 
+import com.fleemer.webmvc.model.Account;
+import com.fleemer.webmvc.model.Category;
 import com.fleemer.webmvc.model.Operation;
 import com.fleemer.webmvc.model.Person;
+import com.fleemer.webmvc.model.enums.CategoryType;
 import com.fleemer.webmvc.repository.OperationRepository;
+import com.fleemer.webmvc.service.exception.ServiceException;
+import com.fleemer.webmvc.service.implementation.AbstractService;
 import com.fleemer.webmvc.service.implementation.OperationServiceImpl;
+import java.math.BigDecimal;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
@@ -177,5 +183,176 @@ public class OperationServiceImplTest {
         when(repository.findAllByInAccountPersonOrOutAccountPersonOrCategoryPerson(person, person, person, pageable)).thenReturn(page);
         assertEquals(page, service.findAll(person, pageable));
         verify(repository, times(1)).findAllByInAccountPersonOrOutAccountPersonOrCategoryPerson(person, person, person, pageable);
+    }
+
+    @Test
+    public void save_outcomeNull() throws ServiceException {
+        Category category = new Category();
+        category.setType(CategoryType.INCOME);
+
+        Account in = new Account();
+        in.setBalance(BigDecimal.valueOf(10.01));
+
+        Operation operation = new Operation();
+        operation.setId(11L);
+        operation.setSum(BigDecimal.valueOf(3.45));
+        operation.setCategory(category);
+        operation.setInAccount(in);
+        when(accountService.save(in)).thenReturn(in);
+        when(categoryService.save(category)).thenReturn(category);
+        when(repository.save(operation)).thenReturn(operation);
+        assertEquals(operation, service.save(operation));
+        assertEquals(13.46, in.getBalance().doubleValue(), 0.0);
+        verify(accountService, times(1)).save(in);
+        verify(categoryService, times(1)).save(category);
+        verify(repository, times(1)).save(operation);
+    }
+
+    @Test
+    public void save_incomeNull() throws ServiceException {
+        Category category = new Category();
+        category.setType(CategoryType.OUTCOME);
+
+        Account out = new Account();
+        out.setBalance(BigDecimal.valueOf(10.01));
+
+        Operation operation = new Operation();
+        operation.setId(11L);
+        operation.setSum(BigDecimal.valueOf(3.45));
+        operation.setCategory(category);
+        operation.setOutAccount(out);
+        when(accountService.save(out)).thenReturn(out);
+        when(categoryService.save(category)).thenReturn(category);
+        when(repository.save(operation)).thenReturn(operation);
+        assertEquals(operation, service.save(operation));
+        assertEquals(6.56, out.getBalance().doubleValue(), 0.0);
+        verify(accountService, times(1)).save(out);
+        verify(categoryService, times(1)).save(category);
+        verify(repository, times(1)).save(operation);
+    }
+
+    @Test
+    public void save_categoryNull() throws ServiceException {
+        Account in = new Account();
+        in.setBalance(BigDecimal.valueOf(6.09));
+
+        Account out = new Account();
+        out.setBalance(BigDecimal.valueOf(10.01));
+
+        Operation operation = new Operation();
+        operation.setId(11L);
+        operation.setSum(BigDecimal.valueOf(3.45));
+        operation.setInAccount(in);
+        operation.setOutAccount(out);
+        when(accountService.save(in)).thenReturn(in);
+        when(accountService.save(out)).thenReturn(out);
+        when(repository.save(operation)).thenReturn(operation);
+        assertEquals(operation, service.save(operation));
+        assertEquals(9.54, in.getBalance().doubleValue(), 0.0);
+        assertEquals(6.56, out.getBalance().doubleValue(), 0.0);
+        verify(accountService, times(2)).save(in);
+        verify(accountService, times(2)).save(out);
+        verify(categoryService, never()).save(any());
+        verify(repository, times(1)).save(operation);
+    }
+
+    @Test(expected = ServiceException.class)
+    public void save_bothAccountsNull() throws ServiceException {
+        Category category = new Category();
+        category.setType(CategoryType.INCOME);
+        Operation operation = new Operation();
+        operation.setId(11L);
+        operation.setSum(BigDecimal.valueOf(3.45));
+        operation.setCategory(category);
+        try {
+            service.save(operation);
+        } catch (ServiceException e) {
+            assertEquals(e.getMessage(), "Both the income account and outcome account are missing.");
+            throw e;
+        }
+    }
+
+    @Test(expected = ServiceException.class)
+    public void save_categoryAndOneAccountNull() throws ServiceException {
+        Account in = new Account();
+        in.setBalance(BigDecimal.valueOf(6.09));
+        Operation operation = new Operation();
+        operation.setId(11L);
+        operation.setSum(BigDecimal.valueOf(3.45));
+        operation.setInAccount(in);
+        try {
+            service.save(operation);
+        } catch (ServiceException e) {
+            assertEquals(e.getMessage(), "The category and at least one account are missing.");
+            throw e;
+        }
+    }
+
+    @Test(expected = ServiceException.class)
+    public void save_allNotNull() throws ServiceException {
+        Category category = new Category();
+        category.setType(CategoryType.OUTCOME);
+
+        Account in = new Account();
+        in.setBalance(BigDecimal.valueOf(6.09));
+
+        Account out = new Account();
+        out.setBalance(BigDecimal.valueOf(10.01));
+
+        Operation operation = new Operation();
+        operation.setId(11L);
+        operation.setSum(BigDecimal.valueOf(3.45));
+        operation.setCategory(category);
+        operation.setInAccount(in);
+        operation.setOutAccount(out);
+        try {
+            service.save(operation);
+        } catch (ServiceException e) {
+            String msg = "Category and both the accounts are not null. There is no way to determine an operation type.";
+            assertEquals(e.getMessage(), msg);
+            throw e;
+        }
+    }
+
+    @Test(expected = ServiceException.class)
+    public void save_wrongIncomeType() throws ServiceException {
+        Category category = new Category();
+        category.setType(CategoryType.INCOME);
+
+        Account out = new Account();
+        out.setBalance(BigDecimal.valueOf(10.01));
+
+        Operation operation = new Operation();
+        operation.setId(11L);
+        operation.setSum(BigDecimal.valueOf(3.45));
+        operation.setCategory(category);
+        operation.setOutAccount(out);
+        try {
+            service.save(operation);
+        } catch (ServiceException e) {
+            assertEquals(e.getMessage(), "Wrong category type for that operation: INCOME.");
+            throw e;
+        }
+    }
+
+    @Test(expected = ServiceException.class)
+    public void save_wrongOutcomeType() throws ServiceException {
+        Category category = new Category();
+        category.setType(CategoryType.OUTCOME);
+
+        Account in = new Account();
+        in.setBalance(BigDecimal.valueOf(10.01));
+
+        Operation operation = new Operation();
+        operation.setId(11L);
+        operation.setSum(BigDecimal.valueOf(3.45));
+        operation.setCategory(category);
+        operation.setInAccount(in);
+        try {
+            service.save(operation);
+        } catch (ServiceException e) {
+            assertEquals(e.getMessage(), "Wrong category type for that operation: OUTCOME.");
+            throw e;
+        }
     }
 }

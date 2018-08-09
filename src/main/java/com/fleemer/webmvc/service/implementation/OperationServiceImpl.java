@@ -82,16 +82,20 @@ public class OperationServiceImpl extends AbstractService<Operation, Long, Opera
 
     private static void checkLogicalConstraints(Account in, Account out, Category cat) throws ServiceException {
         if (in == null & out == null) {
-            throw new ServiceException("both the income account and outcome account are missing");
+            throw new ServiceException("Both the income account and outcome account are missing.");
         }
         if (cat == null & (in == null || out == null)) {
-            throw new ServiceException("the category and at least one account are missing");
+            throw new ServiceException("The category and at least one account are missing.");
         }
         if (cat == null) {
             return;
         }
+        if (in != null && out != null) {
+            String msg = "Category and both the accounts are not null. There is no way to determine an operation type.";
+            throw new ServiceException(msg);
+        }
         if ((in != null && cat.getType() != CategoryType.INCOME) || (out != null && cat.getType() != CategoryType.OUTCOME)) {
-            throw new ServiceException("wrong category type for that operation: " + cat.getType());
+            throw new ServiceException("Wrong category type for that operation: " + cat.getType() + '.');
         }
     }
 }
