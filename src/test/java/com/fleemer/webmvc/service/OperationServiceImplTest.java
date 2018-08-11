@@ -11,7 +11,6 @@ import com.fleemer.webmvc.model.Person;
 import com.fleemer.webmvc.model.enums.CategoryType;
 import com.fleemer.webmvc.repository.OperationRepository;
 import com.fleemer.webmvc.service.exception.ServiceException;
-import com.fleemer.webmvc.service.implementation.AbstractService;
 import com.fleemer.webmvc.service.implementation.OperationServiceImpl;
 import java.math.BigDecimal;
 import java.util.Collections;
