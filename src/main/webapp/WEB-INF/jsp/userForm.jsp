@@ -5,7 +5,7 @@
 <main role="main" class="container">
     <div class="container">
         <div class="row justify-content-center mb-3">
-            <img src="<c:url value="/static/images/logo.ico"/>">
+            <img src="<c:url value="/static/images/favicon.ico"/>">
         </div>
         <div class="row justify-content-center">
             <div class="col col-lg-4">
